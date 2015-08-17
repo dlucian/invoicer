@@ -14,3 +14,12 @@
 $app->get('/', function () use ($app) {
     return $app->welcome();
 });
+
+$app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers'], function($app)
+{
+    $app->get('invoice','InvoiceController@index');
+    $app->get('invoice/{id}','InvoiceController@get');
+    $app->post('invoice','InvoiceController@create');
+    $app->put('invoice/{id}','InvoiceController@update');
+    $app->delete('invoice/{id}','InvoiceController@delete');
+});
