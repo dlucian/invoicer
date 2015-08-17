@@ -2,7 +2,6 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-//print_r($GLOBALS); die();
 Dotenv::load(__DIR__.'/../', !empty($_ENV['APP_ENV']) && $_ENV['APP_ENV'] == 'testing' ? '.env.testing' : '.env');
 
 /*
