@@ -33,8 +33,34 @@ class Invoice extends Model
     public function save(array $options = array())
     {
         // check if it has ID and issued_on, generate them otherwise
+        if (empty($this->invoice))
+            $this->setupNewInvoice();
 
-        parent::save();
+        if (empty($this->issued_on))
+            $this->issued_on = date('Y-m-d');
+
+        $saved = parent::save();
+
+        if ($saved)
+            $this->prepareNextInvoice();
+    }
+
+    private function setupNewInvoice()
+    {
+        $nextInvoice = (int)Setting::getByName('next_invoice');
+        if ($nextInvoice == 0)
+            Setting::setByName('next_invoice', $nextInvoice = 1 );
+
+        $invoiceFormat = sprintf( '%%s%%0%dd', Setting::getByName('invoice_digits') );
+        $this->invoice = sprintf( $invoiceFormat,
+            Setting::getByName('invoice_prepend'),
+            $nextInvoice
+        );
+    }
+
+    private function prepareNextInvoice()
+    {
+        Setting::setByName('next_invoice', (int)Setting::getByName('next_invoice') + 1 );
     }
 
 }
