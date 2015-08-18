@@ -19,3 +19,9 @@ Invoicing API + Bootstrap Client
 #### Deleting invoice - DELETE `/invoice/{id}`
 
 ### Settings `/setting` Resource
+
+#### Getting all settings - GET `/setting`
+
+#### Getting a setting - GET `/setting/{name}`
+
+#### Saving a setting - PUT `/setting/{name}`
