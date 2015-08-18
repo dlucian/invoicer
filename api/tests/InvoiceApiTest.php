@@ -9,6 +9,11 @@ class InvoiceApiTest extends TestCase
 {
     use DatabaseMigrations;
 
+    public function setUp() {
+        parent::setUp();
+        $this->withoutMiddleware();
+    }
+
     private function bogusInvoiceInfo()
     {
         return [
