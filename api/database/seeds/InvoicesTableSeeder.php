@@ -27,7 +27,8 @@ class InvoicesTableSeeder extends Seeder
                 'issuer_info' => $issuer_info,
                 'receiver_info' => ucwords(strtolower(str_random(10) . ' ' . str_random(10))) . "\n" . str_random(16),
                 'branding' => 'Invoicer' . strtoupper(str_random(3)),
-                'extra' => str_random()
+                'extra' => str_random(),
+                'created_at' => date('Y-m-d H:i:s')
             ]);
         }
     }

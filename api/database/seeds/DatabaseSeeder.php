@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
 
         $this->call('InvoicesTableSeeder');
+        $this->call('SettingsTableSeeder');
 
         Model::reguard();
     }
