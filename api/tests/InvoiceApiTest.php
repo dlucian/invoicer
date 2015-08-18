@@ -70,4 +70,16 @@ class InvoiceApiTest extends TestCase
             ->seeJsonContains(['status' => 'success','invoice' => 'TSZ0000000039']);
     }
 
+    public function testAddInvoiceWithoutSettingsAndSeller_shouldReturnBadRequest()
+    {
+        DB::table('settings')->truncate();
+
+        $bogusInfo = $this->bogusInvoiceInfo();
+        unset($bogusInfo['seller_name']);
+        unset($bogusInfo['seller_info']);
+
+        $this->post('/v1/invoice', $bogusInfo )
+            ->seeJsonContains(['status' => 'fail']);
+    }
+
 }
