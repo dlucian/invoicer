@@ -23,6 +23,14 @@ This invoicing tool is most useful when the local currency in the country of res
 
 ### Authentication
 
+This invoicing tool is meant as an inside tool, so current authentication implementation is a basic API key check.
+
+Edit the `.env` file and set your API key to something long and unique (a 16 character alphanumeric string should do).
+
+For each API call, send the `key` parameter containing the API key you've just set.
+
+If you haven't set the API key in your configuration file or if the `key` parameter doesn't match the one you've set, all requests to the API will get a `401 Unauthorised` response. Currently, there's no plan in implementing any other sercurity measures such as oAuth or two-factor authentication. Feel free to fork and implement whatever you find necessary in your case.
+
 ### Settings
 
 The settings are stored in the `settings` table. Update these to your own needs and requirements. 
