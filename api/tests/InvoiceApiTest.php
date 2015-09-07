@@ -100,4 +100,13 @@ class InvoiceApiTest extends TestCase
             ->seeJsonContains(['status' => 'fail']);
     }
 
+    public function testNoNumericVat_shouldReturnBadRequest()
+    {
+        $bogusInfo = $this->bogusInvoiceInfo();
+        $bogusInfo['vat_percent'] = 'vasile';
+
+        $this->post('/v1/invoice', $bogusInfo )
+            ->seeJsonContains(['status' => 'fail']);
+    }
+
 }

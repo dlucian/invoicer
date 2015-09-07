@@ -28,7 +28,7 @@ class InvoiceController extends Controller
         $inputRules = [
             'buyer_name'    => 'required',
             'buyer_info'    => 'required',
-            'vat_percent'   => 'required',
+            'vat_percent'   => 'required|numeric',
             'products'      => 'required|json',
         ];
 
