@@ -18,8 +18,8 @@ class SettingsTableSeeder extends Seeder
             [ 'name' => 'seller_name',      'value' => 'ACME Inc.' ],
             [ 'name' => 'seller_info',      'value' => "J11/2222/3333\nRO99995555\n17 Noname Str.\nTimisoara, Timis\nRomania" ],
             [ 'name' => 'issuer',           'value' => 'Jhon Travolta' ],
-            [ 'name' => 'vatPercent',       'value' => '24' ],
-            [ 'name' => 'brandingLabel',    'value' => 'Invocerware' ],
+            [ 'name' => 'vat_percent',       'value' => '24' ],
+            [ 'name' => 'branding',    'value' => 'Invocerware' ],
             [ 'name' => 'decimals',         'value' => '2' ],
             [ 'name' => 'domestic_currency', 'value' => 'RON' ],
         ]);
