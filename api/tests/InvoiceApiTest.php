@@ -12,6 +12,7 @@ class InvoiceApiTest extends TestCase
     public function setUp() {
         parent::setUp();
         $this->withoutMiddleware();
+        $this->createApplication();
     }
 
     private function bogusInvoiceInfo()
@@ -33,13 +34,16 @@ class InvoiceApiTest extends TestCase
     }
 
     public function testAddInvoiceWithoutBuyer_shouldReturnBadRequest() {
-        $this->post('/v1/invoice', [
-           'vat_percent' => 4
-        ])->seeJsonContains(['status' => 'fail']);
+        $invoice = $this->bogusInvoiceInfo();
+        unset($invoice['buyer_name']);
+        unset($invoice['buyer_info']);
+        $this->post('/v1/invoice', $invoice)->seeJsonContains(['status' => 'fail']);
     }
 
     public function testAddInvoiceWithoutSettings_shouldReturnFirstInvoice()
     {
+        DB::table('settings')->truncate();
+
         $this->post('/v1/invoice', $this->bogusInvoiceInfo() )
             ->seeJsonContains(['status' => 'success','invoice' => '1']);
     }
@@ -82,6 +86,15 @@ class InvoiceApiTest extends TestCase
         $bogusInfo = $this->bogusInvoiceInfo();
         unset($bogusInfo['seller_name']);
         unset($bogusInfo['seller_info']);
+
+        $this->post('/v1/invoice', $bogusInfo )
+            ->seeJsonContains(['status' => 'fail']);
+    }
+
+    public function testAddInvoiceWithInvalidProductsJson_shouldReturnBadRequest()
+    {
+        $bogusInfo = $this->bogusInvoiceInfo();
+        $bogusInfo['products'] = 'vasile';
 
         $this->post('/v1/invoice', $bogusInfo )
             ->seeJsonContains(['status' => 'fail']);
