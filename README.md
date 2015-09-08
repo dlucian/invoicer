@@ -31,6 +31,14 @@ For each API call, send the `key` parameter containing the API key you've just s
 
 If you haven't set the API key in your configuration file or if the `key` parameter doesn't match the one you've set, all requests to the API will get a `401 Unauthorised` response. Currently, there's no plan in implementing any other sercurity measures such as oAuth or two-factor authentication. Feel free to fork and implement whatever you find necessary in your case.
 
+### Requests
+
+All request follow the standards of RESTful API.
+
+### Responses
+
+Responses follow the [jSend specifications](http://labs.omniti.com/labs/jsend) by Omniti Labs. All JSON responses include a `status` field that can be `success`, `fail` or `error`. The difference between `fail` and `error` is that while `fail` indicates an error in the request (such as invalid information provided), `error` will indicate unhandled exception and other server errors that aren't tightly related to the request. 
+
 ### Settings
 
 The settings are stored in the `settings` table. Update these to your own needs and requirements. 
@@ -142,6 +150,32 @@ Response:
 }
 ```
 
+Sending a POST request without all the required information (for example without buyer information) will result in a 400 Bad Request response:
+
+```shell
+curl --request POST \
+  --url http://api.invoicer.co/v1/invoice \
+  --form 'seller_name=Lucian Daniliuc' \
+  --form 'seller_info=321 Vadyia Street\nTimisoara\nRomania' \
+  --form vat_percent=25 \
+  --form 'products=[{"test":"product"}]' \
+  --form key=YOUR_API_KEY
+```
+
+```json
+{
+  "status": "fail",
+  "code": 400,
+  "data": {
+    "buyer_name": [
+      "The buyer name field is required."
+    ],
+    "buyer_info": [
+      "The buyer info field is required."
+    ]
+  }
+}
+```
 #### Getting an invoice - GET `/invoice/{id}`
 
 #### Updating invoice information - PUT `/invoice/{id}`
