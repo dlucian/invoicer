@@ -25,7 +25,7 @@ class InvoiceController extends Controller
         if (empty($invoice))
             return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
 
-        return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->toArray() ]);
+        return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->attachExchangeInfo()->toArray() ]);
     }
 
     public function create(Request $request)

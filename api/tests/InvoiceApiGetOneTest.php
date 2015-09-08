@@ -25,16 +25,36 @@ class InvoiceApiGetOneTest extends TestCase
             'buyer_info' => '123 Zcme Street',
             'vat_percent' => 20,
             'products' => json_encode(array(
-                ['description' => 'Ice Cream', 'quantity' => 2, 'price' => 3.5, 'currency' => 'USD'],
-                ['description' => 'Peanut Butter', 'quantity' => 1, 'price' => 15.0, 'currency' => 'USD']
+                ['description' => 'Ice Cream', 'quantity' => 2, 'price' => 3.5, 'currency' => 'RON'],
+                ['description' => 'Peanut Butter', 'quantity' => 1, 'price' => 15.0, 'currency' => 'RON']
             )),
         ];
     }
 
-    public function testAddInvoiceAndThenGet_shouldReturnItIntact()
+    private function simpleSettings()
     {
         Setting::setByName('domestic_currency', 'RON');
         Setting::setByName('foreign_currency', 'USD');
+    }
+
+    private function getInvoice( $resource )
+    {
+        $retrieved = $this->get($resource)->seeJsonContains(['status' => 'success']);
+        $retrievedJson = json_decode($retrieved->response->content(), true);
+        return $retrievedJson['data'];
+    }
+
+    private function saveInvoice( Array $invoice, $expectedStatus = 'success' )
+    {
+        $postResult = $this->post('/v1/invoice', $invoice )
+            ->seeJsonContains(['status' => $expectedStatus]);
+        $response = json_decode($postResult->response->content(), true);
+        return $response['data'];
+    }
+
+    public function testAddInvoiceAndThenGet_shouldReturnItIntact()
+    {
+        $this->simpleSettings();
         $bogusInfo = $this->bogusInvoiceInfo();
         $output = $this->post('/v1/invoice', $bogusInfo )
             ->seeJsonContains(['status' => 'success']);
@@ -60,5 +80,42 @@ class InvoiceApiGetOneTest extends TestCase
             ->seeJsonContains(['code' => 404]);
     }
 
+    public function testGetDomesticInvoice_shouldNotContainForeignInfo()
+    {
+        $this->simpleSettings(); // RON = domestic currency
+        $originalInvoice = $this->bogusInvoiceInfo();
+        $originalInvoice['products'] = json_encode(array(
+            ['description' => 'Ice Cream', 'quantity' => 2, 'price' => 3.5, 'currency' => 'RON'],
+            ['description' => 'Peanut Butter', 'quantity' => 1, 'price' => 15.0, 'currency' => 'RON']
+        ));
+        $originalResponse = $this->saveInvoice( $originalInvoice );
+
+        $invoice = $this->getInvoice('/v1/invoice/' . $originalResponse['invoice']);
+
+        $this->assertTrue(empty($invoice['exchange_rate']));
+        $products = json_decode($invoice['products'], true);
+        foreach ($products as $product) {
+            $this->assertTrue(empty($product['price_foreign']));
+        }
+    }
+
+    public function testGetForeignInvoice_shouldIncludeExchangeRateAndForeignPrices()
+    {
+        $this->simpleSettings(); // RON = domestic currency
+        $originalInvoice = $this->bogusInvoiceInfo();
+        $originalInvoice['products'] = json_encode(array(
+            ['description' => 'Ice Cream', 'quantity' => 2, 'price' => 3.5, 'currency' => 'USD'],
+            ['description' => 'Peanut Butter', 'quantity' => 1, 'price' => 15.0, 'currency' => 'USD']
+        ));
+        $originalResponse = $this->saveInvoice( $originalInvoice );
+
+        $invoice = $this->getInvoice('/v1/invoice/' . $originalResponse['invoice']);
+        $this->assertGreaterThan( 0, $invoice['exchange_rate'] );
+
+        $products = json_decode($invoice['products'], true);
+        foreach ($products as $product) {
+            $this->assertGreaterThan( 0, $product['price_domestic']);
+        }
+    }
 
 }

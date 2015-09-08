@@ -40,6 +40,12 @@ class CurrencyConverter {
         return $currency->convert( $value );
     }
 
+    public static function getRate( $currency, $date )
+    {
+        $currency = new CurrencyConverter($date, $currency);
+        return $currency->retrieveRate();
+    }
+
     protected function retrieveRate()
     {
         if (($localRate = $this->retrieveLocal()) === false)
