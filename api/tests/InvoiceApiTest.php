@@ -23,7 +23,10 @@ class InvoiceApiTest extends TestCase
             'buyer_name'  => 'Loathin Loather',
             'buyer_info'  => '123 Zcme Street',
             'vat_percent' => 20,
-            'products'    => json_encode(['test' => 'data']),
+            'products'    => json_encode(array(
+                ['description' => 'Ice Cream', 'quantity' => 2, 'price' => 3.5, 'currency' => 'USD'],
+                ['description' => 'Peanut Butter', 'quantity' => 1, 'price' => 15.0, 'currency' => 'USD']
+            )),
         ];
     }
 
@@ -98,6 +101,23 @@ class InvoiceApiTest extends TestCase
 
         $this->post('/v1/invoice', $bogusInfo )
             ->seeJsonContains(['status' => 'fail']);
+    }
+
+    public function testAddInvoiceWithIncompleteProducts_shouldReturnBadRequest()
+    {
+        $bogusInfo = $this->bogusInvoiceInfo();
+        $bogusInfo['products'] = json_encode(array(['description' => 'Some product', 'quantity' => 7]));
+
+        $this->post('/v1/invoice', $bogusInfo )
+            ->seeJsonContains(['status' => 'fail']);
+    }
+
+    public function testAddInvoiceWithValidProducts_shouldWork()
+    {
+        $bogusInfo = $this->bogusInvoiceInfo();
+
+        $this->post('/v1/invoice', $bogusInfo )
+            ->seeJsonContains(['status' => 'success']);
     }
 
     public function testNoNumericVat_shouldReturnBadRequest()

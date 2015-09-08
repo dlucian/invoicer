@@ -13,4 +13,25 @@ class Validation extends Validator
     {
         return !is_null(json_decode($value));
     }
+
+    /**
+     * Returns false if $value isn't a valid JSON array with an array of products, each of them having
+     * all the required fields that correctly describe a product.
+     *
+     * @param $attribute
+     * @param $value
+     * @param $parameters
+     * @return bool
+     */
+    public function validateValidJsonProducts($attribute, $value, $parameters)
+    {
+        $products = json_decode($value, true);
+        if (is_null($products) or !is_array($products))
+            return false;
+        foreach ($products as $product)
+            if (empty($product['description']) or empty($product['quantity']) or empty($product['price']) or empty($product['currency']))
+                return false;
+        return true;
+    }
+
 }

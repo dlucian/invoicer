@@ -29,7 +29,7 @@ class InvoiceController extends Controller
             'buyer_name'    => 'required',
             'buyer_info'    => 'required',
             'vat_percent'   => 'required|numeric',
-            'products'      => 'required|json',
+            'products'      => 'required|validJsonProducts',
         ];
 
         if (Setting::getByName('seller_name') === false || Setting::getByName('seller_info') === false) {
