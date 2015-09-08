@@ -56,6 +56,20 @@ The settings are stored in the `settings` table. Update these to your own needs 
 * **`foreign_currency`** *(string)* Foreign currency such as `USD`
 * **`foreign_language`** *(string)* Foreign invocing language such as `en`
 
+### Currency exchange rates
+
+By default, the Invoicer API retrieves currency rates for Romanian Leu (RON). To adapt it to your country, update the `retrieveRemote()` method in the `\Services\CurrencyConverter` class. The code is design to locally persist every exchange rate it uses to save up API requests and bandwidth. 
+
+To get the rate for your foreign currency, launch the `my:currency` artisan command:
+
+    vagrant@homestead:~/invoicer/api$ php artisan my:currency
+    Persisting today's currency...
+    1 USD = 3.9650 RON
+
+Exchange rate retrieving is set as a scheduled command, designed to run daily at midnight. So add scheduled commands to your cron file to have this up and running on a daily basis:
+
+    * * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1
+
 ### Invoices `/invoice` Resource
 
 #### Listing all invoices - GET `/invoice`
