@@ -6,6 +6,7 @@
 namespace App\Services;
 
 use Illuminate\Validation\Validator;
+use App\Models\Setting;
 
 class Validation extends Validator
 {
@@ -28,10 +29,25 @@ class Validation extends Validator
         $products = json_decode($value, true);
         if (is_null($products) or !is_array($products))
             return false;
-        foreach ($products as $product)
+        $currencies = $this->getCurrencies();
+        foreach ($products as $product) {
             if (empty($product['description']) or empty($product['quantity']) or empty($product['price']) or empty($product['currency']))
-                return false;
+                return false; // missing fields
+            if (!empty($currencies) && !in_array($product['currency'], $currencies))
+                return false; // unknown currency
+        }
+
         return true;
+    }
+
+    private function getCurrencies()
+    {
+        $currencies = [];
+        if (!empty($domestic = Setting::getByName('domestic_currency')))
+            $currencies[] = $domestic;
+        if (!empty($foreign = Setting::getByName('foreign_currency')))
+            $currencies[] = $foreign;
+        return $currencies;
     }
 
 }

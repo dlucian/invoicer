@@ -114,10 +114,27 @@ class InvoiceApiTest extends TestCase
 
     public function testAddInvoiceWithValidProducts_shouldWork()
     {
+        Setting::setByName('domestic_currency', 'RON');
+        Setting::setByName('foreign_currency', 'USD');
+
         $bogusInfo = $this->bogusInvoiceInfo();
 
         $this->post('/v1/invoice', $bogusInfo )
             ->seeJsonContains(['status' => 'success']);
+    }
+
+    public function testAddInvoiceWithUnknownCurrency_shouldReturnBadRequest()
+    {
+        Setting::setByName('domestic_currency', 'RON');
+        Setting::setByName('foreign_currency', 'USD');
+
+        $bogusInfo = $this->bogusInvoiceInfo();
+        $bogusInfo['products'] = json_encode(array(
+            ['description' => 'Ice Cream', 'quantity' => 2, 'price' => 3.5, 'currency' => 'MKD'],
+            ['description' => 'Peanut Butter', 'quantity' => 1, 'price' => 15.0, 'currency' => 'GBP']
+        ));
+        $this->post('/v1/invoice', $bogusInfo )
+            ->seeJsonContains(['status' => 'fail']);
     }
 
     public function testNoNumericVat_shouldReturnBadRequest()
