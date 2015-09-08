@@ -80,6 +80,8 @@ $app->routeMiddleware([
 */
 
 $app->register(App\Providers\ValidationServiceProvider::class);
+$app->register(App\Providers\CommandServiceProvider::class);
+$app->register(App\Providers\CurrencyServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
