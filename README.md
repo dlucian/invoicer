@@ -52,6 +52,56 @@ The settings are stored in the `settings` table. Update these to your own needs 
 
 #### Listing all invoices - GET `/invoice`
 
+Retrieves a list of invoices with basic information: id, invoice number, issue date, seller and buyer information, VAT %, products, issuer and receiver information.
+
+Parameters:
+
+* **`created_after`** *(optional)* retrieve only invoices created after the specified date/time (MySQL format `YYYY-MM-DD HH:MM:SS`)
+* **`created_before`** *(optional)* retrieve only invoices created before the specified date/time
+
+**Example:**
+
+    curl -X GET -H "Cache-Control: no-cache" 'http://api.invoicer.co/v1/invoice?created_after=2015-08-01&created_before=2015-08-30&key=YOUR_API_KEY'
+    
+Response:
+
+    [
+      {
+        "id": 1,
+        "invoice": "AU5 X00196",
+        "issued_on": "2015-08-10",
+        "seller_name": "Hzscsr4h90 Dbqi8dmdgf",
+        "seller_info": "J26/6414/1992\nRO93791398\nSPZnbIk1tXwl9tN7\nzLHjiabgizWcyi6w\nWadiya\noNi08E1o6VgVAGYp",
+        "buyer_name": "Wqrss7ygmh Jmrzuprodj",
+        "buyer_info": "J16/8428/2001\nRO92210334\nLVPKWkng5ttrWe8y\nOBNrlvRRE5PySbsT\nWadiya\n5BnHUFQpNkSe5pHD",
+        "vat_percent": "13.00",
+        "products": "{\"test\":\"info\"}",
+        "issuer_info": "Ngy1vfzcmw Qzyhmuf9vb\nInWkW6CH0sLbrysU",
+        "receiver_info": "Fwoblqobpk Mggvzhn8yu\ncZOzaiwLEFhlvgZu",
+        "branding": "InvoicerDWL",
+        "extra": "YOZl1hzdlAJm3TzE",
+        "created_at": "2015-08-17 18:46:24",
+        "updated_at": "-0001-11-30 00:00:00"
+      },
+      {
+        "id": 2,
+        "invoice": "YMV X00991",
+        "issued_on": "2015-06-27",
+        "seller_name": "Hzscsr4h90 Dbqi8dmdgf",
+        "seller_info": "J26/6414/1992\nRO93791398\nSPZnbIk1tXwl9tN7\nzLHjiabgizWcyi6w\nWadiya\noNi08E1o6VgVAGYp",
+        "buyer_name": "Y6sgxzg95x 44ausnkhmu",
+        "buyer_info": "J72/7151/2001\nRO61357862\njeS4KMZrP6SiN0ut\nxjY856yCUumUdBJu\nWadiya\nCk7Men891ZBIctiF",
+        "vat_percent": "21.00",
+        "products": "{\"test\":\"info\"}",
+        "issuer_info": "Ngy1vfzcmw Qzyhmuf9vb\nInWkW6CH0sLbrysU",
+        "receiver_info": "Idp25d6c86 Nkuezhgp3h\nyCYiUsNzrEhvV0ac",
+        "branding": "InvoicerRPD",
+        "extra": "Gt3g54Vy0YFLNgiV",
+        "created_at": "2015-08-17 18:46:24",
+        "updated_at": "-0001-11-30 00:00:00"
+      }
+    ]
+
 #### Creating a new invoice - POST `/invoice`
 
 #### Getting an invoice - GET `/invoice/{id}`
