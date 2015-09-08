@@ -124,7 +124,7 @@ curl --request POST \
   --form 'buyer_name=Maxwell Smart' \
   --form 'buyer_info=123 Acme Street\nVancouver\nNorth Carolina\nUSA' \
   --form vat_percent=25 \
-  --form 'products=[{"test":"product"}]' \
+  --form 'products=[{"description":"Ice Cream","quantity":2,"price":3.5,"currency":"USD"},{"description":"Peanut Butter","quantity":1,"price":15,"currency":"USD"}]' \
   --form key=YOUR_API_KEY
 ```
 
@@ -140,7 +140,7 @@ Response:
     "buyer_name": "Maxwell Smart",
     "buyer_info": "123 Acme Street\nVancouver\nNorth Carolina\nUSA",
     "vat_percent": "25",
-    "products": "[{\"test\":\"product\"}]",
+    "products": "[{\"description\":\"Ice Cream\",\"quantity\":2,\"price\":3.5,\"currency\":\"USD\"},{\"description\":\"Peanut Butter\",\"quantity\":1,\"price\":15,\"currency\":\"USD\"}]",
     "invoice": "CVI F012",
     "issued_on": "2015-09-08",
     "updated_at": "2015-09-08 07:04:30",
@@ -158,7 +158,7 @@ curl --request POST \
   --form 'seller_name=Lucian Daniliuc' \
   --form 'seller_info=321 Vadyia Street\nTimisoara\nRomania' \
   --form vat_percent=25 \
-  --form 'products=[{"test":"product"}]' \
+  --form 'products=[{"description":"Ice Cream","quantity":2,"price":3.5,"currency":"USD"},{"description":"Peanut Butter","quantity":1,"price":15,"currency":"USD"}]' \
   --form key=YOUR_API_KEY
 ```
 
