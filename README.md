@@ -65,6 +65,7 @@ Parameters:
     
 Response:
 
+```json
     [
       {
         "id": 1,
@@ -101,6 +102,7 @@ Response:
         "updated_at": "-0001-11-30 00:00:00"
       }
     ]
+```
 
 #### Creating a new invoice - POST `/invoice`
 
