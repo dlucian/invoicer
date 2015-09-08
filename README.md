@@ -80,8 +80,8 @@ Retrieves a list of invoices with basic information: id, invoice number, issue d
 
 Parameters:
 
-* **`created_after`** *(optional)* retrieve only invoices created after the specified date/time (MySQL format `YYYY-MM-DD HH:MM:SS`)
-* **`created_before`** *(optional)* retrieve only invoices created before the specified date/time
+* **`created_after`** *(optional)* retrieve only invoices created after the specified date (format `YYYY-MM-DD`)
+* **`created_before`** *(optional)* retrieve only invoices created before the specified date
 
 **Example:**
 
