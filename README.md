@@ -70,6 +70,8 @@ Exchange rate retrieving is set as a scheduled command, designed to run daily at
 
     * * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1
 
+Exchange rates are retrieved even if they haven't been persisted by the daily cron job. But to prevent dependency on a third party service, it's recommended that you have the cron job set up.
+
 ### Invoices `/invoice` Resource
 
 #### Listing all invoices - GET `/invoice`
