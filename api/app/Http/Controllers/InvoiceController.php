@@ -19,9 +19,13 @@ class InvoiceController extends Controller
         return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoices ]);
     }
 
-    public function get($invoiceId)
+    public function get(Request $request, $invoiceId)
     {
-        //TODO: implement me
+        $invoice = Invoice::retrieve(urldecode($invoiceId));
+        if (empty($invoice))
+            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
+
+        return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->toArray() ]);
     }
 
     public function create(Request $request)

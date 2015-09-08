@@ -55,6 +55,12 @@ class Invoice extends Model
             ->get();
     }
 
+    public static function retrieve( $invoiceId )
+    {
+        $invoice = self::where('invoice','=', $invoiceId )->first();
+        return $invoice;
+    }
+
     private function setupNewInvoice()
     {
         $nextInvoice = (int)Setting::getByName('next_invoice');
