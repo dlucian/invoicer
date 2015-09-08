@@ -11,10 +11,12 @@ use Validator;
 class InvoiceController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $invoices = Invoice::all();
-        return response()->json($invoices);
+        $invoices = Invoice::allBetween(
+            $request->input('created_after', '2000-01-01'), $request->input('created_before', date('Y-m-d'))
+        );
+        return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoices ]);
     }
 
     public function get($invoiceId)

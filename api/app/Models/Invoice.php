@@ -45,6 +45,16 @@ class Invoice extends Model
             $this->prepareNextInvoice();
     }
 
+    public static function allBetween( $dateStart = '', $dateStop = '' )
+    {
+        if (empty($dateStart))
+            $dateStart = '2000-01-01';
+        if (empty($dateStop))
+            $dateStop = date('Y-m-d');
+        return self::whereBetween('created_at',[$dateStart . ' 00:00:00', $dateStop . ' 23:59:59'])
+            ->get();
+    }
+
     private function setupNewInvoice()
     {
         $nextInvoice = (int)Setting::getByName('next_invoice');
