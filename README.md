@@ -198,6 +198,68 @@ curl --request POST \
 ```
 #### Getting an invoice - GET `/invoice/{id}`
 
+```shell
+curl --request GET --url "http://api.invoicer.co/v1/invoice/F017?key=YOUR_API_KEY"
+```
+
+```json
+{
+  "status": "success",
+  "code": 0,
+  "data": {
+    "id": 330,
+    "invoice": "F017",
+    "issued_on": "2015-09-08",
+    "seller_name": "Lucian Daniliuc",
+    "seller_info": "321 Wadyia Street\nTimisoara\nRomania",
+    "buyer_name": "Johnny Smart",
+    "buyer_info": "123 Acme Street\nVancouver\nNorth Carolina\nUSA",
+    "vat_percent": "25.00",
+    "products": "[{\"description\":\"Ice Cream\",\"quantity\":2,\"price\":35,\"currency\":\"RON\"},{\"description\":\"Peanut Butter\",\"quantity\":1,\"price\":150,\"currency\":\"RON\"}]",
+    "issuer_info": "Lucian Daniliuc\nTM499701",
+    "receiver_info": "Johnny Smart\johnny@smart.com",
+    "branding": "invoicer",
+    "extra": "Exchange rate 1 USD = 3.7399 RON\n<br /><br />\nServices subject to the reverse charge - VAT to be accounted for by the recipient as per Article 196 of Council\nDirective 2006/112/EC",
+    "created_at": "2015-09-08 12:09:54",
+    "updated_at": "2015-09-08 12:09:54",
+    "exchange_rate": 0
+  }
+}
+```
+
+If the invoice is in a foreign currency, you'll also get the domestic price converted:
+
+```shell
+curl --request GET --url "http://api.invoicer.co/v1/invoice/F016?key=YOUR_API_KEY"
+```
+
+```json
+{
+  "status": "success",
+  "code": 0,
+  "data": {
+    "id": 330,
+    "invoice": "F016",
+    "issued_on": "2015-09-07",
+    "seller_name": "Lucian Daniliuc",
+    "seller_info": "321 Wadyia Street\nTimisoara\nRomania",
+    "buyer_name": "Johnny Smart",
+    "buyer_info": "123 Acme Street\nVancouver\nNorth Carolina\nUSA",
+    "vat_percent": "25.00",
+    "products": "[{\"description\":\"Ice Cream\",\"quantity\":2,\"price\":3.5,\"currency\":\"USD\",\"price_domestic\":13.88},{\"description\":\"Peanut Butter\",\"quantity\":1,\"price\":15,\"currency\":\"USD\",\"price_domestic\":59.48}]",
+    "issuer_info": "Lucian Daniliuc\nTM499701",
+    "receiver_info": "Johnny Smart\johnny@smart.com",
+    "branding": "invoicer",
+    "extra": "Exchange rate 1 USD = 3.7399 RON\n<br /><br />\nServices subject to the reverse charge - VAT to be accounted for by the recipient as per Article 196 of Council\nDirective 2006/112/EC",
+    "created_at": "2015-09-08 12:09:54",
+    "updated_at": "2015-09-08 12:09:54",
+    "exchange_rate": "3.9650"
+  }
+}
+```
+
+As you can see, the response contains the `price_domestic` attribute in the `products` JSON array and you'll also notice the `exchange_rate` attribute that's now being populated. 
+
 #### Updating invoice information - PUT `/invoice/{id}`
 
 #### Deleting invoice - DELETE `/invoice/{id}`
