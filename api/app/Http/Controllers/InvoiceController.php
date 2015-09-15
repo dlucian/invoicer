@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Models\Setting;
+use App\Services\PdfInvoiceGenerator;
 use Validator;
 
 class InvoiceController extends Controller
@@ -25,7 +26,35 @@ class InvoiceController extends Controller
         if (empty($invoice))
             return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
 
-        return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->attachExchangeInfo()->toArray() ]);
+        if (empty($request->input('pdf'))) {
+            return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->attachExchangeInfo()->toArray() ]);
+        } else {
+
+            switch ($request->input('pdf')) {
+                case 'domestic':
+                    return response( PdfInvoiceGenerator::generateDomestic( $invoice ), 200, [
+                        'Content-Type'  => 'application/pdf',
+                        'Cache-Control' => 'private, must-revalidate, post-check=0, pre-check=0, max-age=1',
+                        'Pragma'        => 'public',
+                        'Expires'       => 'Mon, 21 Nov 1983 05:00:00 GMT',
+                        'Last-Modified' => gmdate('D, d M Y H:i:s').' GMT',
+                        'Content-Disposition' => sprintf('inline; filename="%s-domestic.pdf"', $invoiceId)
+                    ]);
+                    break;
+                case 'foreign':
+                    return response( PdfInvoiceGenerator::generateForeign( $invoice ), 200, [
+                        'Content-Type'  => 'application/pdf',
+                        'Cache-Control' => 'private, must-revalidate, post-check=0, pre-check=0, max-age=1',
+                        'Pragma'        => 'public',
+                        'Expires'       => 'Mon, 21 Nov 1983 05:00:00 GMT',
+                        'Last-Modified' => gmdate('D, d M Y H:i:s').' GMT',
+                        'Content-Disposition' => sprintf('inline; filename="%s-foreign.pdf"', $invoiceId)
+                    ]);
+                    break;
+                default:
+                    throw new \Exception('Invalid PDF invoice type ' . $request->input('pdf'));
+            }
+        }
     }
 
     public function create(Request $request)

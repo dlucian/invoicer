@@ -21,12 +21,12 @@ class Setting extends Model
         return self::$rules;
     }
 
-    public static function getByName($name)
+    public static function getByName($name, $default = false)
     {
         $setting = self::where('name',$name)->first();
         if (!empty($setting->id)) // found setting
             return $setting->value;
-        return false;
+        return $default;
     }
 
     public static function setByName($name, $value)

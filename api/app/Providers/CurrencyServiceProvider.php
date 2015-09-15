@@ -14,7 +14,7 @@ class CurrencyServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('Currency', function ($app) {
+        $this->app->singleton('CurrencyConverter', function ($app) {
             return new CurrencyConverter();
         });
     }

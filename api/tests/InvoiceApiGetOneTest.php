@@ -118,4 +118,24 @@ class InvoiceApiGetOneTest extends TestCase
         }
     }
 
+    /**
+     * @outputBuffering enabled
+     */
+    public function testGetDomesticPdfInvoice_shouldDeliverAPdfFile()
+    {
+        $this->simpleSettings(); // RON = domestic currency
+        $originalInvoice = $this->bogusInvoiceInfo();
+        $originalInvoice['products'] = json_encode(array(
+            ['description' => 'Ice Cream', 'quantity' => 2, 'price' => 3.5, 'currency' => 'RON'],
+            ['description' => 'Peanut Butter', 'quantity' => 1, 'price' => 15.0, 'currency' => 'RON']
+        ));
+        $originalResponse = $this->saveInvoice( $originalInvoice );
+
+        $domesticPdfResponse = $this->get('/v1/invoice/' . $originalResponse['invoice'] . '?pdf=domestic');
+
+        $this->assertEquals('application/pdf', $domesticPdfResponse->response->headers->get('Content-Type'));
+    }
+
+
+
 }
