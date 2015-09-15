@@ -36,4 +36,16 @@ class SettingApiTest extends TestCase {
             'secondarySetting'  => 'someOtherValue'
         ]]);
     }
+
+    public function testDeleteSetting_permanentlyDeletesIt()
+    {
+        $this->put('/v1/setting/primarySetting', ['value' => 'someValue'] )->seeJsonContains(['status' => 'success', 'code' => 0]);
+        $this->put('/v1/setting/secondarySetting', ['value' => 'someOtherValue'] )->seeJsonContains(['status' => 'success', 'code' => 0]);
+
+        $this->delete('/v1/setting/primarySetting')->seeJsonContains(['status' => 'success', 'code' => 0]);
+
+        $this->get('/v1/setting')->seeJsonContains(['status' => 'success', 'code' => 0, 'data' => [
+            'secondarySetting'  => 'someOtherValue'
+        ]]);
+    }
 } // END class

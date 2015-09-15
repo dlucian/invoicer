@@ -28,5 +28,6 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers', 'middleware
         $app->get('setting','SettingController@index');
         $app->get('setting/{id}','SettingController@get');
         $app->put('setting/{id}','SettingController@update');
+        $app->delete('setting/{id}','SettingController@delete');
     }
 );

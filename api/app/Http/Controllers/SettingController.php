@@ -36,4 +36,10 @@ class SettingController extends Controller {
         return response()->json(['status' => 'success', 'code' => 0, 'data' => $request->input('value') ]);
     }
 
+    public function delete( $id )
+    {
+        Setting::where('name', $id)->delete();
+        return response()->json(['status' => 'success', 'code' => 0, 'data' => '' ]);
+    }
+
 }
