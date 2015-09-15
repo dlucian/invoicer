@@ -35,6 +35,16 @@ class Invoice extends Model
         return self::$rules;
     }
 
+    public function exchangeRate()
+    {
+        return $this->exchangeRate;
+    }
+
+    public function foreignCurrency()
+    {
+        return $this->foreignCurrency;
+    }
+
     public function save(array $options = array())
     {
         // check if it has ID and issued_on, generate them otherwise

@@ -111,22 +111,25 @@ class PdfInvoiceGenerator {
 
         $orders = array();
         foreach( $invoice->getProducts() as $product ) {
+           //dd($product);
+            $price = $product['price'];
+            $currency = $product['currency'];
+            if( self::$invoiceType == 'domestic' && $invoice->isForeign() ) {
+                $currency = strtoupper(Setting::getByName('domestic_currency'));
+                $price = $product['price_domestic'];
+            }
             $aOrder = array(
                 'quant'         => $product[ 'quantity' ],
                 'descr'         => $product[ 'description' ],
-                'unit'          => $product[ 'price' ] . ' ' . $product[ 'currency' ],
-                'total'         => $product[ 'price' ] * $product[ 'quantity' ] . ' ' . $product[ 'currency' ],
-                '_price'        => $product[ 'price' ],
-                '_total'         => $product[ 'price' ] * $product[ 'quantity' ],
-                '_currency'     => $product[ 'currency' ],
+                'unit'          => $price . ' ' . $currency,
+                'total'         => $price * $product[ 'quantity' ] . ' ' . $currency,
+                '_price'        => $price,
+                '_total'         => $price * $product[ 'quantity' ],
+                '_currency'     => $currency,
                 // extra
             );
-            if( !empty( $product[ 'priceb' ] ) && !empty( $product[ 'currencyb' ] ) ) {
-                $aOrder[ 'unit2' ] = $product[ 'priceb' ] . ' ' . $product[ 'currencyb' ];
-                $aOrder[ 'total2' ] = $product[ 'priceb' ] * $product[ 'quantity' ] . ' ' . $product[ 'currencyb' ];
-                $aOrder[ '_price2' ] = $product[ 'priceb' ];
-                $aOrder[ '_total2' ] = $product[ 'priceb' ] * $product[ 'quantity' ];
-                $aOrder[ '_currency2' ] = $product[ 'currencyb' ];
+            if( self::$invoiceType == 'domestic' && $invoice->isForeign() ) {
+                $aOrder['_price2'] = $product['price'];
             }
             $orders[] = $aOrder;
         }
@@ -177,23 +180,13 @@ class PdfInvoiceGenerator {
         $pdf->CreateTextBox(
             number_format( $total, (int)Setting::getByName('decimals'), Setting::getByName('decimal_point','.'), Setting::getByName('thousands_separator',',') ) . ' ' . $row[ '_currency' ],
             $aPosition[ 'total' ], $currY + 5, 40, 5, 'arial', 9, '', 'R');
-        if( !empty( $total2 ) ) {
-            $pdf->CreateTextBox(
-                number_format( $total2, (int)Setting::getByName('decimals'), Setting::getByName('decimal_point','.'), Setting::getByName('thousands_separator',',') ) . ' ' . $row[ '_currency2' ],
-                $aPosition[ 'total' ], $currY + 9, 40, 5, 'arial', 8, '', 'R');
-        }
         $currY = $currY + 10;
 
         if( $invoice->vat_percent >= 0 ) {
-            $pdf->CreateTextBox( ucwords(self::trans(sprintf('VAT %s', $invoice->vat_percent ))), $aPosition[ 'unit' ], $currY + 5, 36, 5, 'arial', 9, '', 'R');
+            $pdf->CreateTextBox( ucwords(sprintf(self::trans('VAT %.2f%%'), $invoice->vat_percent)), $aPosition[ 'unit' ], $currY + 5, 36, 5, 'arial', 9, '', 'R');
             $pdf->CreateTextBox(
-                number_format( $total * ($invoice->vat_percent/100),  (int)Setting::getByName('decimals'), Setting::getByName('decimal_point','.'), Setting::getByName('thousands_separator',',') ) . ' ' . $row[ '_currency' ],
-                $aPosition[ 'total' ], $currY + 5, 40, 5, 'arial', 9, '', 'R');
-            if( !empty( $total2 ) ) {
-                $pdf->CreateTextBox(
-                    number_format( $total2 * ($invoice->vat_percent/100),  (int)Setting::getByName('decimals'), Setting::getByName('decimal_point','.'), Setting::getByName('thousands_separator',',') ) . ' ' . $row[ '_currency2' ],
-                    $aPosition[ 'total' ], $currY + 9, 40, 5, 'arial', 8, '', 'R');
-            }
+                number_format( $total * ($invoice->vat_percent/100),  (int)Setting::getByName('decimals'), Setting::getByName('decimal_point','.'), Setting::getByName('thousands_separator',',') ) .
+                ' ' . $row[ '_currency' ], $aPosition[ 'total' ], $currY + 5, 40, 5, 'arial', 9, '', 'R');
         }
 
         $currY = $currY + 10;
@@ -203,31 +196,44 @@ class PdfInvoiceGenerator {
         $pdf->CreateTextBox(
             number_format( $total + ( $total * ( $invoice->vat_percent / 100 ) ),  (int)Setting::getByName('decimals'), Setting::getByName('decimal_point','.'), Setting::getByName('thousands_separator',',') ) . ' ' . $row[ '_currency' ],
             $aPosition[ 'total' ], $currY + 5, 40, 5, 'arialbd', 9, '', 'R');
-        if( !empty( $total2 ) ) {
-            $pdf->CreateTextBox(
-                number_format( $total2 + ( $total2 * ( $invoice->vat_percent / 100 ) ),  (int)Setting::getByName('decimals'), Setting::getByName('decimal_point','.'), Setting::getByName('thousands_separator',',') ) . ' ' . $row[ '_currency2' ],
-                $aPosition[ 'total' ], $currY + 9, 40, 5, 'arialbd', 8, '', 'R');
-        }
 
         $currY = $currY + 25;
 
-        $pdf->CreateTextBox( ucwords(self::trans('issued by')), 0, $currY + 2, 40, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
-        $pdf->Line($pdf->marginLeft, $currY+8, $pdf->marginLeft + 60, $currY+8 );
+        if (!empty($invoice->issuer_info)) {
+            $pdf->CreateTextBox( ucwords(self::trans('issued by')), 0, $currY + 2, 40, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
+            $pdf->Line($pdf->marginLeft, $currY+8, $pdf->marginLeft + 60, $currY+8 );
 
-        $pdf->SetTextColor( 33, 33, 33 );
-        $pdf->SetXY( $pdf->marginLeft, $currY + 9 );
-        $pdf->SetFont('proximanova-regular', '', 11.22 );
-        $pdf->MultiCell(60, 30, $invoice->issuer_info, 0, 'L', false );
+            $pdf->SetTextColor( 33, 33, 33 );
+            $pdf->SetXY( $pdf->marginLeft, $currY + 9 );
+            $pdf->SetFont('proximanova-regular', '', 11.22 );
+            $pdf->MultiCell(60, 30, $invoice->issuer_info, 0, 'L', false );
+        }
 
-        $pdf->CreateTextBox( ucwords(self::trans('customer')), 100, $currY + 2, 40, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
-        $pdf->Line($pdf->marginLeft + 100, $currY+8, $pdf->marginLeft + 100 + 60, $currY+8 );
+        if (!empty($invoice->receiver_info)) {
+            $pdf->CreateTextBox( ucwords(self::trans('customer')), 100, $currY + 2, 40, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
+            $pdf->Line($pdf->marginLeft + 100, $currY+8, $pdf->marginLeft + 100 + 60, $currY+8 );
 
-        $pdf->SetTextColor( 33, 33, 33 );
-        $pdf->SetXY( $pdf->marginLeft + 100, $currY + 9 );
-        $pdf->SetFont('proximanova-regular', '', 11.22 );
-        $pdf->MultiCell(65, 30, $invoice->receiver_info, 0, 'L', false );
+            $pdf->SetTextColor( 33, 33, 33 );
+            $pdf->SetXY( $pdf->marginLeft + 100, $currY + 9 );
+            $pdf->SetFont('proximanova-regular', '', 11.22 );
+            $pdf->MultiCell(65, 30, $invoice->receiver_info, 0, 'L', false );
+        }
 
-        $currY = $currY + 30;
+        if (!empty($invoice->issuer_info) || !empty($invoice->receiver_info)) {
+            $currY = $currY + 30;
+        }
+
+        if (self::$invoiceType == 'domestic' && $invoice->isForeign()) {
+            $invoice->extra .= sprintf("<br>%s: %.2f %s + TVA %.2f%% = %s %s", ucfirst(self::trans('billed amount')), $total2, $invoice->foreignCurrency(),
+                $invoice->vat_percent,
+                number_format( $total2 + $total2 * ($invoice->vat_percent/100),  (int)Setting::getByName('decimals'), Setting::getByName('decimal_point','.'), Setting::getByName('thousands_separator',',') ),
+                $invoice->foreignCurrency() );
+            $exchangeText = sprintf( ucfirst(self::trans('exchange rate on %s') ), date('j-M-Y', strtotime( $invoice->issued_on ) ) );
+            $invoice->extra .= sprintf("<br>%s: 1 %s = %.4f %s", $exchangeText,
+                $invoice->foreignCurrency(), $invoice->exchangeRate(), Setting::getByName('domestic_currency')
+            );
+            $invoice->extra .= "<br>";
+        }
 
         // some payment instructions or information
         $pdf->setXY(20, $currY);
@@ -285,16 +291,18 @@ class PdfInvoiceGenerator {
             'date issued'  => 'data emiterii',
             'seller'  => 'furnizor',
             'buyer'  => 'cumparator',
-            'id'  => 'id',
+            'id'  => '#',
             'description'  => 'descriere',
             'quantity'  => 'cantitate',
             'unit price'  => 'pret unitar',
             'total'  => 'total',
             'subtotal'  => 'subtotal',
-            'VAT %s'  => 'TVA %s',
+            'VAT %.2f%%'  => 'TVA %.2f%%',
             'invoice total'  => 'total facturat',
             'issued by'  => 'emisa de',
             'customer'  => 'delegat',
+            'billed amount' => 'valoare incasata',
+            'exchange rate on %s' => 'Curs de schimb la %s',
         );
     }
 } // END class PdfInvoiceGenerator

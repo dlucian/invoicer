@@ -32,7 +32,7 @@ class InvoiceController extends Controller
 
             switch ($request->input('pdf')) {
                 case 'domestic':
-                    return response( PdfInvoiceGenerator::generateDomestic( $invoice ), 200, [
+                    return response( PdfInvoiceGenerator::generateDomestic( $invoice->attachExchangeInfo() ), 200, [
                         'Content-Type'  => 'application/pdf',
                         'Cache-Control' => 'private, must-revalidate, post-check=0, pre-check=0, max-age=1',
                         'Pragma'        => 'public',
@@ -42,7 +42,7 @@ class InvoiceController extends Controller
                     ]);
                     break;
                 case 'foreign':
-                    return response( PdfInvoiceGenerator::generateForeign( $invoice ), 200, [
+                    return response( PdfInvoiceGenerator::generateForeign( $invoice->attachExchangeInfo() ), 200, [
                         'Content-Type'  => 'application/pdf',
                         'Cache-Control' => 'private, must-revalidate, post-check=0, pre-check=0, max-age=1',
                         'Pragma'        => 'public',
