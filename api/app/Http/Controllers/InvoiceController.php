@@ -118,7 +118,13 @@ class InvoiceController extends Controller
 
     public function delete($invoiceId)
     {
-        //TODO: implement me
+        $invoice = Invoice::retrieve(urldecode($invoiceId));
+
+        if (empty($invoice['invoice']))
+            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
+
+        $invoice->delete();
+        return response()->json(['status' => 'success', 'code' => 0, 'data' => '' ]);
     }
 
     protected function getInputRules()
