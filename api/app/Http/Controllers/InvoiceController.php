@@ -59,7 +59,44 @@ class InvoiceController extends Controller
 
     public function create(Request $request)
     {
+        $inputRules = $this->getInputRules();
+        $validator = Validator::make($request->all(), $inputRules);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()], 400);
+        }
 
+        $invoice = Invoice::create($request->all());
+
+        return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->toArray() ]);
+    }
+
+    public function update(Request $request, $invoiceId)
+    {
+        $invoice = Invoice::retrieve(urldecode($invoiceId));
+
+        if (empty($invoice['invoice']))
+            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
+
+        $inputRules = $this->getInputRules();
+        $validator = Validator::make($request->all(), $inputRules);
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()], 400);
+        }
+
+        $invoice->update($request->all());
+        if(!$invoice->save())
+            return response()->json(['status' => 'error', 'code' => 500, 'message' => "Could not update resource." ], 500);
+
+        return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->toArray() ]);
+    }
+
+    public function delete($invoiceId)
+    {
+        //TODO: implement me
+    }
+
+    protected function getInputRules()
+    {
         $inputRules = [
             'buyer_name'    => 'required',
             'buyer_info'    => 'required',
@@ -70,26 +107,6 @@ class InvoiceController extends Controller
         if (Setting::getByName('seller_name') === false || Setting::getByName('seller_info') === false) {
             $inputRules += ['seller_name' => 'required', 'seller_info' => 'required'];
         }
-
-        $validator = Validator::make($request->all(), $inputRules);
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()], 400);
-        }
-
-        $invoice = Invoice::create($request->all());
-
-        return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->toArray() ]);
+        return $inputRules;
     }
-
-    public function update($invoiceId)
-    {
-        //TODO: implement me
-    }
-
-    public function delete($invoiceId)
-    {
-        //TODO: implement me
-    }
-
 }

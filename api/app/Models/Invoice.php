@@ -58,6 +58,8 @@ class Invoice extends Model
 
         if ($saved)
             $this->prepareNextInvoice();
+
+        return $saved;
     }
 
     public static function allBetween( $dateStart = '', $dateStop = '' )
