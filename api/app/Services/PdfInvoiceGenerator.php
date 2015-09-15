@@ -224,7 +224,7 @@ class PdfInvoiceGenerator {
         }
 
         if (self::$invoiceType == 'domestic' && $invoice->isForeign()) {
-            $invoice->extra .= sprintf("<br>%s: %.2f %s + TVA %.2f%% = %s %s", ucfirst(self::trans('billed amount')), $total2, $invoice->foreignCurrency(),
+            $invoice->extra .= sprintf("<br><br>%s: %.2f %s + TVA %.2f%% = %s %s", ucfirst(self::trans('billed amount')), $total2, $invoice->foreignCurrency(),
                 $invoice->vat_percent,
                 number_format( $total2 + $total2 * ($invoice->vat_percent/100),  (int)Setting::getByName('decimals'), Setting::getByName('decimal_point','.'), Setting::getByName('thousands_separator',',') ),
                 $invoice->foreignCurrency() );
