@@ -217,7 +217,7 @@ curl --request GET --url "http://api.invoicer.co/v1/invoice/F017?key=YOUR_API_KE
     "vat_percent": "25.00",
     "products": "[{\"description\":\"Ice Cream\",\"quantity\":2,\"price\":35,\"currency\":\"RON\"},{\"description\":\"Peanut Butter\",\"quantity\":1,\"price\":150,\"currency\":\"RON\"}]",
     "issuer_info": "Lucian Daniliuc\nTM499701",
-    "receiver_info": "Johnny Smart\johnny@smart.com",
+    "receiver_info": "Johnny Smart\njohnny@smart.com",
     "branding": "invoicer",
     "extra": "Exchange rate 1 USD = 3.7399 RON\n<br /><br />\nServices subject to the reverse charge - VAT to be accounted for by the recipient as per Article 196 of Council\nDirective 2006/112/EC",
     "created_at": "2015-09-08 12:09:54",
