@@ -79,12 +79,38 @@ class InvoiceController extends Controller
 
         $inputRules = $this->getInputRules();
         $validator = Validator::make($request->all(), $inputRules);
-        if ($validator->fails()) {
+        if ($validator->fails())
             return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()], 400);
-        }
 
-        $invoice->update($request->all());
-        if(!$invoice->save())
+        $updatedInvoice = $invoice->getAttributes();
+        foreach ($updatedInvoice as $attribute => $value)
+            $updatedInvoice[$attribute] = $request->input($attribute);
+
+        unset($updatedInvoice['invoice']);
+        unset($updatedInvoice['id']);
+        if (!$invoice->update($updatedInvoice))
+            return response()->json(['status' => 'error', 'code' => 500, 'message' => "Could not update resource." ], 500);
+
+        return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->toArray() ]);
+    }
+
+    public function patch(Request $request, $invoiceId)
+    {
+        $invoice = Invoice::retrieve(urldecode($invoiceId));
+
+        if (empty($invoice['invoice']))
+            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
+
+        $inputRules = [
+            'vat_percent'   => 'numeric',
+            'products'      => 'validJsonProducts'
+        ];
+
+        $validator = Validator::make($request->all(), $inputRules);
+        if ($validator->fails())
+            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()], 400);
+
+        if (!$invoice->update($request->all()))
             return response()->json(['status' => 'error', 'code' => 500, 'message' => "Could not update resource." ], 500);
 
         return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->toArray() ]);

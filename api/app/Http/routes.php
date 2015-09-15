@@ -22,6 +22,7 @@ $app->group(['prefix' => 'v1','namespace' => 'App\Http\Controllers', 'middleware
         $app->get('invoice/{id}','InvoiceController@get');
         $app->post('invoice','InvoiceController@create');
         $app->put('invoice/{id}','InvoiceController@update');
+        $app->patch('invoice/{id}','InvoiceController@patch');
         $app->delete('invoice/{id}','InvoiceController@delete');
     }
 );

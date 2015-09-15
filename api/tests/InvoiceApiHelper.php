@@ -25,6 +25,7 @@ class InvoiceApiHelper extends TestCase {
                 ['description' => 'Ice Cream', 'quantity' => 2, 'price' => 3.5, 'currency' => 'RON'],
                 ['description' => 'Peanut Butter', 'quantity' => 1, 'price' => 15.0, 'currency' => 'RON']
             )),
+            'extra' => 'This is some extra information',
         ];
     }
 

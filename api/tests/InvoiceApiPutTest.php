@@ -12,7 +12,6 @@ class InvoiceApiPutTest extends InvoiceApiHelper
         $this->simpleSettings();
         $bogusInvoice = $this->bogusInvoiceInfo();
         $originalResponse = $this->saveInvoice( $bogusInvoice );
-        $invoice = $this->getInvoice('/v1/invoice/' . $originalResponse['invoice']);
 
         $bogusInvoice['seller_name'] = 'The Updated Guy';
         $this->put('/v1/invoice/' . $originalResponse['invoice'], $bogusInvoice )->seeJsonContains(['status' => 'success']);
@@ -31,11 +30,23 @@ class InvoiceApiPutTest extends InvoiceApiHelper
         $this->simpleSettings();
         $bogusInvoice = $this->bogusInvoiceInfo();
         $originalResponse = $this->saveInvoice( $bogusInvoice );
-        $invoice = $this->getInvoice('/v1/invoice/' . $originalResponse['invoice']);
 
         $bogusInvoice['seller_name'] = 'The Updated Guy';
         $this->put('/v1/invoice/' . $originalResponse['invoice'], ['seller_name' => 'The Incomplete Acme Inc.'] )
             ->seeJsonContains(['status' => 'fail', 'code' => 400]);
+    }
+
+    public function testPutOptionalFieldMissing_shouldClearThatField()
+    {
+        $this->simpleSettings();
+        $bogusInvoice = $this->bogusInvoiceInfo();
+        $originalResponse = $this->saveInvoice( $bogusInvoice );
+
+        unset($bogusInvoice['extra']);
+        $this->put('/v1/invoice/' . $originalResponse['invoice'], $bogusInvoice )->seeJsonContains(['status' => 'success']);
+
+        $newInvoice = $this->getInvoice('/v1/invoice/' . $originalResponse['invoice']);
+        $this->assertEquals('', $newInvoice['extra']);
     }
 
 } // END class
