@@ -24,7 +24,7 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::retrieve(urldecode($invoiceId));
         if (empty($invoice))
-            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
+            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."]);
 
         if (empty($request->input('pdf'))) {
             return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->attachExchangeInfo()->toArray() ]);
@@ -62,7 +62,7 @@ class InvoiceController extends Controller
         $inputRules = $this->getInputRules();
         $validator = Validator::make($request->all(), $inputRules);
         if ($validator->fails()) {
-            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()], 400);
+            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()]);
         }
 
         $invoice = Invoice::create($request->all());
@@ -75,12 +75,12 @@ class InvoiceController extends Controller
         $invoice = Invoice::retrieve(urldecode($invoiceId));
 
         if (empty($invoice['invoice']))
-            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
+            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."]);
 
         $inputRules = $this->getInputRules();
         $validator = Validator::make($request->all(), $inputRules);
         if ($validator->fails())
-            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()], 400);
+            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()]);
 
         $updatedInvoice = $invoice->getAttributes();
         foreach ($updatedInvoice as $attribute => $value)
@@ -89,7 +89,7 @@ class InvoiceController extends Controller
         unset($updatedInvoice['invoice']);
         unset($updatedInvoice['id']);
         if (!$invoice->update($updatedInvoice))
-            return response()->json(['status' => 'error', 'code' => 500, 'message' => "Could not update resource." ], 500);
+            return response()->json(['status' => 'error', 'code' => 500, 'message' => "Could not update resource." ]);
 
         return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->toArray() ]);
     }
@@ -99,7 +99,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::retrieve(urldecode($invoiceId));
 
         if (empty($invoice['invoice']))
-            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
+            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."]);
 
         $inputRules = [
             'vat_percent'   => 'numeric',
@@ -108,10 +108,10 @@ class InvoiceController extends Controller
 
         $validator = Validator::make($request->all(), $inputRules);
         if ($validator->fails())
-            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()], 400);
+            return response()->json(['status' => 'fail', 'code' => 400, 'data' => $validator->errors()]);
 
         if (!$invoice->update($request->all()))
-            return response()->json(['status' => 'error', 'code' => 500, 'message' => "Could not update resource." ], 500);
+            return response()->json(['status' => 'error', 'code' => 500, 'message' => "Could not update resource." ]);
 
         return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoice->toArray() ]);
     }
@@ -121,7 +121,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::retrieve(urldecode($invoiceId));
 
         if (empty($invoice['invoice']))
-            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."], 404);
+            return response()->json(['status' => 'fail', 'code' => 404, 'message' => "Invoice $invoiceId not found."]);
 
         $invoice->delete();
         return response()->json(['status' => 'success', 'code' => 0, 'data' => '' ]);
