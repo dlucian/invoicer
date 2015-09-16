@@ -262,12 +262,103 @@ As you can see, the response contains the `price_domestic` attribute in the `pro
 
 #### Updating invoice information - PUT `/invoice/{id}`
 
+The `PUT` request is used when you want to update *ALL* of the invoice's attributes. If you leave optional fields out, they will be cleared, if you leave required fields out, you'll get a `400 Bad Request` response.
+
+#### Updating invoice information - PATCH `/invoice/{id}`
+
+`PATCH` is used to update one or several attributes. 
+
 #### Deleting invoice - DELETE `/invoice/{id}`
+
+`DELETE` permanently deletes an invoice from the database. It however doesn't decrease the auto-incremental invoice number. 
 
 ### Settings `/setting` Resource
 
+The settings are described earlier and are used for various configuration of the invoicing tool. 
+
 #### Getting all settings - GET `/setting`
+
+Retrieves a list with all the saved settings and their value.
+
+```shell
+curl --request GET \
+  --url 'http://api.invoicer.co/v1/setting?key=YOUR_API_KEY'
+```
+
+Response:
+
+```json
+{
+  "status": "success",
+  "code": 0,
+  "data": {
+    "next_invoice": "22",
+    "invoice_prepend": "F",
+    "invoice_digits": "3",
+    "seller_name": "ACME Inc.",
+    "seller_info": "J11/2222/3333\nRO99995555\n17 Noname Str.\nTimisoara, Timis\nRomania",
+    "issuer": "Jhon Travolta",
+    "vatPercent": "24",
+    "brandingLabel": "Invocerware",
+    "decimals": "2",
+    "domestic_currency": "RON",
+    "foreign_currency": "USD"
+  }
+}
+```
 
 #### Getting a setting - GET `/setting/{name}`
 
+```shell
+curl --request GET \
+  --url 'http://api.invoicer.co/v1/setting/seller_name?key=YOUR_API_KEY'
+```
+
+Response:
+
+```json
+{
+  "status": "success",
+  "code": 0,
+  "data": {
+    "value": "ACME Inc."
+  }
+}
+```
+
 #### Saving a setting - PUT `/setting/{name}`
+
+A setting's value is changed via `PUT` requests. For example:
+
+```shell
+curl --request PUT \
+  --url 'http://api.invoicer.co/v1/setting/seller_name?key=YOUR_API_KEY' \
+  --data value=Oversee%20Inc.
+```
+
+```json
+{
+  "status": "success",
+  "code": 0,
+  "data": "Oversee Inc."
+}
+```
+
+#### Deleting a setting - DELETE `/setting/{name}`
+
+A setting is deleted via `DELETE` requests. 
+
+```shell
+curl --request DELETE \
+  --url 'http://api.invoicer.co/v1/setting/seller_name?key=YOUR_API_KEY'
+```
+
+Response:
+
+```json
+{
+  "status": "success",
+  "code": 0,
+  "data": ""
+}
+```
