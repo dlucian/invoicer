@@ -14,3 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::controllers([
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
+]);
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/home', function ()    {
+        // authenticated users get here
+    });
+});
