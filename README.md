@@ -362,3 +362,18 @@ Response:
   "data": ""
 }
 ```
+
+## Tests
+
+Invoicer contains a small suite of tests to check the integrity of the operations. Tests are stored in the `tests` folder. Feel free to add more tests as you see fit. 
+
+```shell
+vagrant@homestead:~/invoicer/api$ phpunit
+PHPUnit 4.8.4 by Sebastian Bergmann and contributors.
+
+...................................
+
+Time: 8.52 seconds, Memory: 63.75Mb
+
+OK (35 tests, 106 assertions)
+```
