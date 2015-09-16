@@ -363,7 +363,7 @@ Response:
 }
 ```
 
-## Tests
+### Tests
 
 Invoicer contains a small suite of tests to check the integrity of the operations. Tests are stored in the `tests` folder. Feel free to add more tests as you see fit. 
 
