@@ -8,6 +8,9 @@
             <div class="col s12">
 
                 <div class="row">
+                    <div class="col s12" style="height: 10px;">
+                        &nbsp;
+                    </div>
                     <div class="col s12">
                         <div class="card white">
                             <div class="card-content grey-text text-darken-3">

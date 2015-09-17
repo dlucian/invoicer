@@ -5,7 +5,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col s6 offset-s3">
+            <div class="col s12 m6 offset-m3">
                 <h1>Sign In</h1>
                 @foreach($errors->all() as $error)
                     <div class="card-panel deep-orange darken-3 white-text">{!!$error!!}</div>
