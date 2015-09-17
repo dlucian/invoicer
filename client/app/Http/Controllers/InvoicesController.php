@@ -40,6 +40,17 @@ class InvoicesController extends Controller {
         return view('invoices.update', [ 'settings' => $settings ]);
     }
 
+    public function duplicate( Request $request, $invoiceId )
+    {
+        $invoice = $this->api->invoice( $invoiceId );
+        unset( $invoice['invoice'] );
+        unset( $invoice['id'] );
+
+        $settings = $this->api->settings();
+
+        return view('invoices.update', ['invoice' => $invoice, 'settings' => $settings ]);
+    }
+
     public function store( Request $request, $invoiceId )
     {
         $validator = Validator::make($request->all(), [

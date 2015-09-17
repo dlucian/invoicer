@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/invoice/{id}', ['as' => 'invoice-view', 'uses' => 'InvoicesController@view']);
     Route::get('/invoice/{id}/edit', ['as' => 'invoice-update', 'uses' => 'InvoicesController@update']);
     Route::post('/invoice/{id}/edit', ['as' => 'invoice-update', 'uses' => 'InvoicesController@store']);
+    Route::get('/invoice/{id}/duplicate', ['as' => 'invoice-duplicate', 'uses' => 'InvoicesController@duplicate']);
 
     Route::get('/invoice/{id}/delete', ['as' => 'invoice-delete', 'uses' => 'InvoicesController@delete']);
 });

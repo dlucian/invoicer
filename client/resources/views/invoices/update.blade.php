@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <h1>@if (!empty($invoice)) Invoice {{$invoice['invoice']}} @else New Invoice @endif</h1>
+                <h1>@if (!empty($invoice['invoice'])) Invoice {{$invoice['invoice']}} @else New Invoice @endif</h1>
 
                 @if (count($errors) > 0)
                     <div class="card red lighten-2 white-text">
@@ -19,7 +19,7 @@
                     </div>
                 @endif
 
-                <form method="post" action="{{route('invoice-update', !empty($invoice) ? $invoice['invoice'] : 0)}}" id="invoice-update">
+                <form method="post" action="{{route('invoice-update', !empty($invoice['invoice']) ? $invoice['invoice'] : 0)}}" id="invoice-update">
                     {{csrf_field()}}
                     <div class="section">
                         <h5>Identification</h5>
