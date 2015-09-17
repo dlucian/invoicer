@@ -130,10 +130,27 @@
                     <div class="col s12">
                         <a href="{{route('invoice-update', $invoice['invoice'])}}" class="waves-effect waves-light btn"><i class="material-icons left">toc</i>edit</a>
                         <a class="waves-effect waves-light btn"><i class="material-icons left">toll</i>duplicate</a>
-                        <a class="waves-effect waves-light btn red"><i class="material-icons left">not_interested</i>delete</a>
+                        <a class="waves-effect waves-light btn red" id="delete-invoice"><i class="material-icons left">not_interested</i>delete</a>
                     </div>
                 </div>
             </div>
         </div> <!-- end "row" -->
     </div>
+
+    @include('invoices/components/add-invoice')
+
+@endsection
+
+
+@section('scripts')
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('#delete-invoice').click(function(e) {
+                e.preventDefault();
+                if (confirm('Are you sure?')) {
+                    window.location = "{{route('invoice-delete', $invoice['invoice'])}}";
+                }
+            });
+        });
+    </script>
 @endsection

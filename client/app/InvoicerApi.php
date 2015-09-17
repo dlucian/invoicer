@@ -27,7 +27,6 @@ class InvoicerApi {
     public function invoice($invoiceId)
     {
         $invoice = $this->call('GET', sprintf('/%s', $invoiceId) );
-//dd($invoice);
         return $this->unpackProducts($invoice);
     }
 
@@ -40,13 +39,24 @@ class InvoicerApi {
 
     public function updateInvoice( $invoiceId, $invoiceData )
     {
-        $invoiceData['invoice'] = $invoiceId;
-        $invoiceData['products'] = json_encode($invoiceData['products']);
-        return $this->call('PUT', sprintf('/%s', $invoiceId), $invoiceData);
+        if (!empty($invoiceId)) {
+            $invoiceData['invoice'] = $invoiceId;
+            $invoiceData['products'] = json_encode($invoiceData['products']);
+            return $this->call('PUT', sprintf('/%s', $invoiceId), $invoiceData);
+        } else {
+            $invoiceData['products'] = json_encode($invoiceData['products']);
+            return $this->call('POST', '', $invoiceData);
+        }
+    }
+
+    public function delete( $invoiceId )
+    {
+        return $this->call('DELETE', sprintf('/%s', $invoiceId));
     }
 
     protected function unpackProducts($invoice)
     {
+        $this->settings();
         if (!is_array($invoice['products']))
             $invoice['products'] = json_decode($invoice['products'], true);
         $subTotal = 0;
@@ -63,9 +73,9 @@ class InvoicerApi {
             $invoice['subtotal_domestic'] = $subTotalDomestic;
 
         // VAT
-        $invoice['vat_value'] = $subTotal / (100/$invoice['vat_percent']);
+        $invoice['vat_value'] = round($subTotal / (100/$invoice['vat_percent']), $this->settings['decimals']);
         if (!empty($subTotalDomestic))
-            $invoice['vat_domestic'] = $subTotalDomestic / (100/$invoice['vat_percent']);
+            $invoice['vat_domestic'] = round($subTotalDomestic / (100/$invoice['vat_percent']), $this->settings['decimals']);
 
         return $invoice;
     }

@@ -30,13 +30,19 @@ class InvoicesController extends Controller {
         $invoice = $this->api->invoice( $invoiceId );
         $settings = $this->api->settings();
 
-        return view('invoices.update', ['invoice' => !empty($request->input('invoice'))? $request->all() : $invoice, 'settings' => $settings ]);
+        return view('invoices.update', ['invoice' => $invoice, 'settings' => $settings ]);
+    }
+
+    public function create( Request $request )
+    {
+        $settings = $this->api->settings();
+
+        return view('invoices.update', [ 'settings' => $settings ]);
     }
 
     public function store( Request $request, $invoiceId )
     {
         $validator = Validator::make($request->all(), [
-            // 'invoice'       => 'required',
             'issued_on'     => 'required|date',
             'seller_name'   => 'required',
             'buyer_name'    => 'required',
@@ -52,13 +58,24 @@ class InvoicesController extends Controller {
         ]);
 
         if ($validator->fails())
-            return redirect(route('invoice-update', $invoiceId))
+            return redirect(route( $invoiceId ? 'invoice-update' : 'invoice-create', $invoiceId))
                 ->withErrors($validator)
                 ->withInput();
 
-        $this->api->updateInvoice( $invoiceId, $this->requestToInvoice($request->all()) );
+        $updateResult = $this->api->updateInvoice( $invoiceId, $this->requestToInvoice($request->all()) );
 
-        return redirect(route('invoice-view', $invoiceId));
+        return redirect(route('invoice-view', $updateResult['invoice']));
+    }
+
+    public function delete( $invoiceId )
+    {
+        $invoice = $this->api->invoice( $invoiceId );
+        if (empty($invoice['invoice']))
+            die('Could not find invoice!');
+
+        $this->api->delete( $invoiceId );
+
+        return redirect(route('invoices-list'));
     }
 
     protected function requestToInvoice( $requestData )

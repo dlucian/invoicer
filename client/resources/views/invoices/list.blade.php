@@ -33,4 +33,6 @@
             </div>
         </div>
     </div>
+
+    @include('invoices/components/add-invoice')
 @endsection

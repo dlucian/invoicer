@@ -22,7 +22,12 @@ Route::controllers([
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', ['as' => 'invoices-list', 'uses' => 'InvoicesController@index']);
+
+    Route::get('/invoice/create', ['as' => 'invoice-create', 'uses' => 'InvoicesController@create']);
+
     Route::get('/invoice/{id}', ['as' => 'invoice-view', 'uses' => 'InvoicesController@view']);
     Route::get('/invoice/{id}/edit', ['as' => 'invoice-update', 'uses' => 'InvoicesController@update']);
     Route::post('/invoice/{id}/edit', ['as' => 'invoice-update', 'uses' => 'InvoicesController@store']);
+
+    Route::get('/invoice/{id}/delete', ['as' => 'invoice-delete', 'uses' => 'InvoicesController@delete']);
 });
