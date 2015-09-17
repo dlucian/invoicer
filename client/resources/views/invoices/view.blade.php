@@ -103,18 +103,21 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-action">
+                                <a href="{{route('invoice-domestic', $invoice['invoice'])}}" target="_blank" class="white-text waves-effect waves-light btn blue tooltipped" data-position="top" data-delay="50" data-tooltip="Domestic PDF (new window)">Domestic</a>
+                                <a href="{{route('invoice-foreign', $invoice['invoice'])}}" target="_blank" class="white-text waves-effect waves-light btn blue tooltipped" data-position="top" data-delay="50" data-tooltip="Foreign PDF (new window)">Foreign</a>
+                                <a href="{{route('invoice-update', $invoice['invoice'])}}" class="white-text waves-effect waves-light btn tooltipped" data-position="top" data-delay="50" data-tooltip="Edit Invoice"><i class="material-icons">toc</i></a>
+                                <a href="{{route('invoice-duplicate', $invoice['invoice'])}}" class="white-text waves-effect waves-light btn tooltipped" data-position="top" data-delay="50" data-tooltip="Duplicate Invoice"><i class="material-icons">toll</i></a>
+                                <a href="#" class="white-text waves-effect waves-light btn red tooltipped" data-position="top" data-delay="50" data-tooltip="Delete Invoice" id="delete-invoice"><i class="material-icons">not_interested</i></a>
+                            </div>
                         </div>
                     </div>
                 </div> <!-- end "row" -->
 
                 <div class="row">
                     <div class="col s12">
-                        <a href="{{route('invoice-domestic', $invoice['invoice'])}}" target="_blank" class="waves-effect waves-light btn blue"><i class="material-icons left">cloud</i>Domestic</a>
-                        <a href="{{route('invoice-foreign', $invoice['invoice'])}}" target="_blank" class="waves-effect waves-light btn blue"><i class="material-icons left">label</i>Foreign</a>
 
-                        <a href="{{route('invoice-update', $invoice['invoice'])}}" class="waves-effect waves-light btn"><i class="material-icons left">toc</i>edit</a>
-                        <a href="{{route('invoice-duplicate', $invoice['invoice'])}}" class="waves-effect waves-light btn"><i class="material-icons left">toll</i>duplicate</a>
-                        <a href="#" class="waves-effect waves-light btn red" id="delete-invoice"><i class="material-icons left">not_interested</i>delete</a>
+
                     </div>
                 </div>
             </div>
