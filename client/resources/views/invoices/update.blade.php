@@ -22,7 +22,7 @@
                 <form method="post" action="{{route('invoice-update', !empty($invoice['invoice']) ? $invoice['invoice'] : 0)}}" id="invoice-update">
                     {{csrf_field()}}
                     <div class="section">
-                        <h5>Identification</h5>
+                        <h4>Identification</h4>
 
                         <div class="row">
                             <div class="input-field col s12 m6">
@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="section">
-                        <h5>Recipients</h5>
+                        <h4>Recipients</h4>
 
                         <div class="row">
                             <div class="input-field col s12 m6">
@@ -75,7 +75,7 @@
 
 
                     <div class="section">
-                        <h5>Products</h5>
+                        <h4>Products</h4>
 
                         @for ($i=0;$i<3;$i++)
                         <div class="row">
@@ -104,7 +104,7 @@
                     </div>
 
                     <div class="section">
-                        <h5>Additions</h5>
+                        <h4>Additions</h4>
 
                         <div class="row">
                             <div class="input-field col s12">
