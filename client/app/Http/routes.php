@@ -31,4 +31,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/invoice/{id}/duplicate', ['as' => 'invoice-duplicate', 'uses' => 'InvoicesController@duplicate']);
 
     Route::get('/invoice/{id}/delete', ['as' => 'invoice-delete', 'uses' => 'InvoicesController@delete']);
+
+    Route::get('/invoice/{id}/domestic', ['as' => 'invoice-domestic', 'uses' => 'InvoicesController@domestic']);
+    Route::get('/invoice/{id}/foreign', ['as' => 'invoice-foreign', 'uses' => 'InvoicesController@foreign']);
 });

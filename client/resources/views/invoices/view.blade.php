@@ -109,8 +109,8 @@
 
                 <div class="row">
                     <div class="col s12">
-                        <a class="waves-effect waves-light btn blue"><i class="material-icons left">cloud</i>Domestic</a>
-                        <a class="waves-effect waves-light btn blue"><i class="material-icons left">label</i>Foreign</a>
+                        <a href="{{route('invoice-domestic', $invoice['invoice'])}}" target="_blank" class="waves-effect waves-light btn blue"><i class="material-icons left">cloud</i>Domestic</a>
+                        <a href="{{route('invoice-foreign', $invoice['invoice'])}}" target="_blank" class="waves-effect waves-light btn blue"><i class="material-icons left">label</i>Foreign</a>
 
                         <a href="{{route('invoice-update', $invoice['invoice'])}}" class="waves-effect waves-light btn"><i class="material-icons left">toc</i>edit</a>
                         <a href="{{route('invoice-duplicate', $invoice['invoice'])}}" class="waves-effect waves-light btn"><i class="material-icons left">toll</i>duplicate</a>

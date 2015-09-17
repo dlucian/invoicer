@@ -54,6 +54,16 @@ class InvoicerApi {
         return $this->call('DELETE', sprintf('/%s', $invoiceId));
     }
 
+    public function domestic( $invoiceId )
+    {
+        return $this->retrievePdf( sprintf('/%s?pdf=domestic', $invoiceId ) );
+    }
+
+    public function foreign( $invoiceId )
+    {
+        return $this->retrievePdf( sprintf('/%s?pdf=foreign', $invoiceId ) );
+    }
+
     protected function unpackProducts($invoice)
     {
         $this->settings();
@@ -82,10 +92,33 @@ class InvoicerApi {
         return $invoice;
     }
 
+    protected function retrievePdf( $resource )
+    {
+        if (strpos($resource,'?'))
+            $connectString = '&';
+        else
+            $connectString = '?';
+
+        $client = new Client();
+        $res = $client->request('GET', $this->apiEndpoint . '/v1/invoice' . $resource . $connectString . 'key=' . $this->apiKey);
+
+        if ($res->getStatusCode() != 200)
+            throw new Exception('Error requesting data.');
+        if (!in_array('application/pdf', $res->getHeader('content-type')))
+            throw new Exception('Invalid response content type.');
+
+        return $res->getBody()->getContents();
+    }
+
     protected function call( $action = 'GET', $resource = '', $data = array() )
     {
+        if (strpos($resource,'?'))
+            $connectString = '&';
+        else
+            $connectString = '?';
+
         $client = new Client();
-        $res = $client->request($action, $this->apiEndpoint . '/v1/invoice' . $resource . '?key=' . $this->apiKey, ['form_params' => $data]);
+        $res = $client->request($action, $this->apiEndpoint . '/v1/invoice' . $resource . $connectString . 'key=' . $this->apiKey, ['form_params' => $data]);
 
         if ($res->getStatusCode() != 200)
             throw new Exception('Error requesting data.');

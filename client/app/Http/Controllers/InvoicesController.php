@@ -89,6 +89,28 @@ class InvoicesController extends Controller {
         return redirect(route('invoices-list'));
     }
 
+    public function domestic( $invoiceId )
+    {
+        return $this->pdf( 'domestic', $invoiceId );
+    }
+
+    public function foreign( $invoiceId )
+    {
+        return $this->pdf( 'foreign', $invoiceId );
+    }
+
+    protected function pdf( $type, $invoiceId )
+    {
+        return response( $this->api->$type( $invoiceId ), 200, [
+            'Content-Type'  => 'application/pdf',
+            'Cache-Control' => 'private, must-revalidate, post-check=0, pre-check=0, max-age=1',
+            'Pragma'        => 'public',
+            'Expires'       => 'Mon, 21 Nov 1983 05:00:00 GMT',
+            'Last-Modified' => gmdate('D, d M Y H:i:s').' GMT',
+            'Content-Disposition' => sprintf('inline; filename="invoice-%s-%s.pdf"', $invoiceId, $type)
+        ]);
+    }
+
     protected function requestToInvoice( $requestData )
     {
         $products = [];
