@@ -6,46 +6,12 @@
     <div class="container">
         <div class="row">
             <div class="col s12">
-                <h1>Invoice {{$invoice['invoice']}}</h1>
-
-                <div class="row">
-                    <div class="col s12 m6">
-                        <div class="card blue-grey lighten-2">
-                            <div class="card-content white-text">
-                                <span class="card-title">Information</span>
-                                <p><strong>ID:</strong> {{$invoice['id']}}</p>
-                                <p><strong>No.:</strong> {{$invoice['invoice']}}</p>
-                                <p><strong>Issued:</strong> {{date('j M Y', strtotime($invoice['issued_on']))}}</p>
-                                <p><strong>VAT %:</strong> {{$invoice['vat_percent']}}</p>
-                                <p><strong>Exchange Rate {{$settings['foreign_currency']}}:</strong> {{$invoice['exchange_rate']}} {{$settings['domestic_currency']}}</p>
-                                <p><strong>Branding:</strong> {{$invoice['branding']}}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12 m6">
-                        <div class="card white">
-                            <div class="card-content grey-text text-darken-3">
-                                <span class="card-title grey-text text-darken-4">PDF</span>
-                                <p>PDF is generated on-the-fly. Select the desired PDF version:</p>
-                                <br />
-                                <div class="row">
-                                    <div class="col s12 m6">
-                                        <a class="waves-effect waves-light btn blue"><i class="material-icons left">cloud</i>Domestic</a>
-                                    </div>
-                                    <div class="col s12 m6">
-                                        <a class="waves-effect waves-light btn cyan"><i class="material-icons left">label</i>Foreign</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="col s12">
                         <div class="card white">
                             <div class="card-content grey-text text-darken-3">
-                                <span class="card-title grey-text text-darken-4">Invoice</span>
+                                <span class="card-title grey-text text-darken-4">Invoice {{$invoice['invoice']}} / {{date('j M Y', strtotime($invoice['issued_on']))}}</span>
                                 <div class="row">
                                     <div class="col s12 m6 hide-on-small-only">
                                         <p><strong>{{$invoice['seller_name']}}</strong></p>
@@ -106,7 +72,11 @@
                                                 <td class="hide-on-med-and-down right-align">
                                                     <strong>
                                                         @if (!empty($invoice['subtotal_domestic']))
-                                                            {{$invoice['subtotal_domestic']+$invoice['vat_domestic']}}
+                                                            @if (!empty($invoice['vat_domestic']))
+                                                                {{$invoice['subtotal_domestic']+$invoice['vat_domestic']}}
+                                                            @else
+                                                                {{$invoice['subtotal_domestic']}}
+                                                            @endif
                                                             {{$settings['domestic_currency'] or ''}}
                                                         @endif
                                                     </strong>
@@ -121,6 +91,14 @@
                                         <p>{!! nl2br(str_replace('\n',"\n",$invoice['extra'])) !!}</p>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <p class="grey-text text-lighten-1"><strong>Internal ID</strong> #{{$invoice['id']}} | VAT {{$invoice['vat_percent']}}% |
+                                            <strong>Exchange Rate</strong> 1 {{$settings['foreign_currency']}} = {{$invoice['exchange_rate']}} {{$settings['domestic_currency']}} |
+                                            <strong>Branding:</strong> {{$invoice['branding']}}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -128,6 +106,9 @@
 
                 <div class="row">
                     <div class="col s12">
+                        <a class="waves-effect waves-light btn blue"><i class="material-icons left">cloud</i>Domestic</a>
+                        <a class="waves-effect waves-light btn blue"><i class="material-icons left">label</i>Foreign</a>
+
                         <a href="{{route('invoice-update', $invoice['invoice'])}}" class="waves-effect waves-light btn"><i class="material-icons left">toc</i>edit</a>
                         <a class="waves-effect waves-light btn"><i class="material-icons left">toll</i>duplicate</a>
                         <a class="waves-effect waves-light btn red" id="delete-invoice"><i class="material-icons left">not_interested</i>delete</a>

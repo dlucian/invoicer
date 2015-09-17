@@ -73,10 +73,12 @@ class InvoicerApi {
             $invoice['subtotal_domestic'] = $subTotalDomestic;
 
         // VAT
-        $invoice['vat_value'] = round($subTotal / (100/$invoice['vat_percent']), $this->settings['decimals']);
-        if (!empty($subTotalDomestic))
-            $invoice['vat_domestic'] = round($subTotalDomestic / (100/$invoice['vat_percent']), $this->settings['decimals']);
-
+        $invoice['vat_value'] = 0;
+        if ($invoice['vat_percent'] > 0) {
+            $invoice['vat_value'] = round($subTotal / (100/$invoice['vat_percent']), $this->settings['decimals']);
+            if (!empty($subTotalDomestic))
+                $invoice['vat_domestic'] = round($subTotalDomestic / (100/$invoice['vat_percent']), $this->settings['decimals']);
+        }
         return $invoice;
     }
 
