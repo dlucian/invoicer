@@ -6,14 +6,7 @@ use Validator;
 use App\InvoicerApi;
 use Illuminate\Http\Request;
 
-class InvoicesController extends Controller {
-
-    protected $api = null;
-
-    public function __construct()
-    {
-        $this->api = $api = new InvoicerApi(env('INVOICER_ENDPOINT'), env('INVOICER_KEY'));
-    }
+class InvoicesController extends InvoicerController {
 
     public function index( Request $request )
     {

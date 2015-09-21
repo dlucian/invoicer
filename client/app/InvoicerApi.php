@@ -78,6 +78,19 @@ class InvoicerApi {
         return $total;
     }
 
+    public function monthlyTotals( $invoices )
+    {
+        $monthly = [];
+        foreach( $invoices as $invoice) {
+            $invoiceMonth = date('Y-m',strtotime($invoice['issued_on']));
+            if (empty($monthly[$invoiceMonth]))
+                $monthly[$invoiceMonth] = 0;
+            $monthly[$invoiceMonth] += $invoice['subtotal_domestic'];
+        }
+        //dd($monthly);
+        return $monthly;
+    }
+
     protected function unpackProducts($invoice)
     {
         $this->settings();

@@ -23,7 +23,7 @@
     <div class="nav-wrapper">
         <div class="row">
             <div class="col s12">
-                <a href="{{route('invoices-list')}}" class="brand-logo">Invoicer</a>
+                <a href="{{route('home')}}" class="brand-logo">Invoicer</a>
                 <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
 
                 <ul id="nav-desktop" class="right hide-on-med-and-down">

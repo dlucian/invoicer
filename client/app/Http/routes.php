@@ -21,8 +21,9 @@ Route::controllers([
 ]);
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/home', ['as' => 'invoices-list', 'uses' => 'InvoicesController@index']);
+    Route::get('/home', ['as' => 'home', 'uses' => 'HomeController@index']);
 
+    Route::get('/invoices', ['as' => 'invoices-list', 'uses' => 'InvoicesController@index']);
     Route::get('/invoice/create', ['as' => 'invoice-create', 'uses' => 'InvoicesController@create']);
 
     Route::get('/invoice/{id}', ['as' => 'invoice-view', 'uses' => 'InvoicesController@view']);
