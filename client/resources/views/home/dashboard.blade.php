@@ -34,17 +34,16 @@
             ]);
 
             var options = {
-                chart: {
-                    title: 'Invoiced Value Throughout Last Year',
-                    subtitle: 'in domestic currency ({{$settings['domestic_currency']}})',
-                },
+                title: 'Past Year Invoiced Value',
+                subtitle: 'in domestic currency ({{$settings['domestic_currency']}})',
                 width: 900,
                 height: 500,
-                lineWidth: 10,
+                lineWidth: 5,
                 curveType: 'function',
                 colors: ['#ff5c5e'],
-                legend: 'none',
-                pointSize: 30,
+//                legend: 'none',
+                legend: { position: 'bottom' },
+                pointSize: 10,
                 animation: {duration:1000, easing: 'out'}
             };
 

@@ -87,7 +87,6 @@ class InvoicerApi {
                 $monthly[$invoiceMonth] = 0;
             $monthly[$invoiceMonth] += $invoice['subtotal_domestic'];
         }
-        //dd($monthly);
         return $monthly;
     }
 
