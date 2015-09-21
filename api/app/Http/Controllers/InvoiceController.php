@@ -17,6 +17,8 @@ class InvoiceController extends Controller
         $invoices = Invoice::allBetween(
             $request->input('created_after', '2000-01-01'), $request->input('created_before', date('Y-m-d'))
         );
+        foreach ($invoices as & $invoice)
+            $invoice->attachExchangeInfo();
         return response()->json(['status' => 'success', 'code' => 0, 'data' => $invoices ]);
     }
 
