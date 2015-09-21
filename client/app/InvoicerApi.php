@@ -19,9 +19,13 @@ class InvoicerApi {
         $this->apiKey = $invoicerApiKey;
     }
 
-    public function invoices()
+    public function invoices( $from, $to )
     {
-        return $this->call('GET');
+        $invoices = $this->call('GET', '?created_after=' . $from . '&created_before=' . $to );
+        foreach ($invoices as & $invoice) {
+            $invoice = $this->unpackProducts($invoice);
+        }
+        return $invoices;
     }
 
     public function invoice($invoiceId)
@@ -64,30 +68,48 @@ class InvoicerApi {
         return $this->retrievePdf( sprintf('/%s?pdf=foreign', $invoiceId ) );
     }
 
+    public function totals( $invoices )
+    {
+        $total = ['foreign' => 0, 'domestic' => 0];
+        foreach ($invoices as $invoice) {
+            $total['foreign'] += !empty($invoice['subtotal_foreign']) ? $invoice['subtotal_foreign'] : 0;
+            $total['domestic'] += $invoice['subtotal_domestic'];
+        }
+        return $total;
+    }
+
     protected function unpackProducts($invoice)
     {
         $this->settings();
         if (!is_array($invoice['products']))
             $invoice['products'] = json_decode($invoice['products'], true);
-        $subTotal = 0;
+        $subTotalForeign = 0;
         $subTotalDomestic = 0;
+        $baseCurrency = '';
         foreach ($invoice['products'] as $product) {
-            $subTotal += $product['price'] * $product['quantity'];
-            if (!empty($product['price_domestic']))
+            if (!empty($product['price_domestic'])) {
+                $subTotalForeign += $product['price'] * $product['quantity'];
                 $subTotalDomestic += $product['price_domestic'] * $product['quantity'];
+                $baseCurrency = $product['currency'];
+            } else {
+                $subTotalDomestic += $product['price'] * $product['quantity'];
+                $baseCurrency = $this->settings['domestic_currency'];
+            }
         }
 
+        $invoice['base_currency'] = $baseCurrency;
+
         // subtotals
-        $invoice['subtotal'] = $subTotal;
-        if (!empty($subTotalDomestic))
-            $invoice['subtotal_domestic'] = $subTotalDomestic;
+        $invoice['subtotal_domestic'] = $subTotalDomestic;
+        $invoice['subtotal_foreign'] = $subTotalForeign;
 
         // VAT
-        $invoice['vat_value'] = 0;
+        $invoice['vat_value_domestic'] = 0;
+        $invoice['vat_value_foreign'] = 0;
         if ($invoice['vat_percent'] > 0) {
-            $invoice['vat_value'] = round($subTotal / (100/$invoice['vat_percent']), $this->settings['decimals']);
-            if (!empty($subTotalDomestic))
-                $invoice['vat_domestic'] = round($subTotalDomestic / (100/$invoice['vat_percent']), $this->settings['decimals']);
+            $invoice['vat_value_domestic'] = round($subTotalDomestic / (100/$invoice['vat_percent']), $this->settings['decimals']);
+            if (!empty($subTotalForeign))
+                $invoice['vat_value_foreign'] = round($subTotalForeign / (100/$invoice['vat_percent']), $this->settings['decimals']);
         }
         return $invoice;
     }
@@ -112,7 +134,7 @@ class InvoicerApi {
 
     protected function call( $action = 'GET', $resource = '', $data = array() )
     {
-        if (strpos($resource,'?'))
+        if (strpos($resource,'?')!==false)
             $connectString = '&';
         else
             $connectString = '?';

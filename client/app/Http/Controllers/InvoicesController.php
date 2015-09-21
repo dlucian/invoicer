@@ -15,9 +15,17 @@ class InvoicesController extends Controller {
         $this->api = $api = new InvoicerApi(env('INVOICER_ENDPOINT'), env('INVOICER_KEY'));
     }
 
-    public function index()
+    public function index( Request $request )
     {
-        return view('invoices.list', ['invoices' => $this->api->invoices() ]);
+        $from = $request->input('from');
+        $to = $request->input('to');
+        $invoices = $this->api->invoices($from, $to);
+        $settings = $this->api->settings();
+        return view('invoices.list', [
+            'invoices'  => $invoices,
+            'totals'    => $this->api->totals($invoices),
+            'settings'  => $settings,
+        ]);
     }
 
     public function view( $invoiceId )

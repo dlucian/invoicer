@@ -37,8 +37,8 @@
                                                 <th data-field="id" class="hide-on-small-only">No.</th>
                                                 <th data-field="name">Description</th>
                                                 <th data-field="price" class="hide-on-small-only right-align">Quantity</th>
-                                                <th data-field="price" class="hide-on-med-and-down right-align">Price</th>
-                                                <th data-field="price" class="hide-on-med-and-down right-align">Price (domestic)</th>
+                                                <th data-field="price" class="right-align">Price (domestic)</th>
+                                                <th data-field="price" class="hide-on-med-and-down right-align">Price (foreign)</th>
                                             </tr>
                                             </thead>
 
@@ -49,41 +49,35 @@
                                                     <td class="hide-on-small-only">{{$i++}}</td>
                                                     <td>{{$product['description']}}</td>
                                                     <td  class="hide-on-small-only right-align">{{$product['quantity']}}</td>
-                                                    <td class="hide-on-small-only right-align">{{number_format($product['price'], $settings['decimals'])}} {{$product['currency']}}</td>
-                                                    <td class="hide-on-med-and-down right-align">{{$product['price_domestic'] or '---'}} {{$settings['domestic_currency'] or ''}}</td>
+                                                    @if (empty($product['price_domestic']))
+                                                        <td class="right-align">{{number_format($product['price'], $settings['decimals'])}} {{$product['currency']}}</td>
+                                                        <td class="hide-on-small-only right-align"></td>
+                                                    @else
+                                                        <td class="right-align">{{$product['price_domestic'] or '---'}} {{$settings['domestic_currency'] or ''}}</td>
+                                                        <td class="hide-on-small-only right-align">{{number_format($product['price'], $settings['decimals'])}} {{$product['currency']}}</td>
+                                                    @endif
                                                 </tr>
                                             @endforeach
                                             <tr>
                                                 <td class="hide-on-small-only"></td>
                                                 <td class="hide-on-small-only"></td>
                                                 <td><strong>SUBTOTAL:</strong></td>
-                                                <td class="right-align"><strong>{{number_format($invoice['subtotal'], $settings['decimals'])}} {{$product['currency']}}</strong></td>
-                                                <td class="hide-on-med-and-down right-align"><strong>{{$invoice['subtotal_domestic'] or '---'}} {{$settings['domestic_currency'] or ''}}</strong></td>
+                                                <td class="right-align"><strong>{{number_format($invoice['subtotal_domestic'], $settings['decimals'])}} {{$settings['domestic_currency']}}</strong></td>
+                                                <td class="hide-on-med-and-down right-align"><strong>{{number_format($invoice['subtotal_foreign'], $settings['decimals'])}} {{$settings['foreign_currency'] or ''}}</strong></td>
                                             </tr>
                                             <tr>
                                                 <td class="hide-on-small-only"></td>
                                                 <td class="hide-on-small-only"></td>
                                                 <td><strong>VAT {{number_format($invoice['vat_percent'], $settings['decimals'])}}%:</strong></td>
-                                                <td class="right-align"><strong>{{number_format($invoice['vat_value'], $settings['decimals'])}} {{$product['currency']}}</strong></td>
-                                                <td class="hide-on-med-and-down right-align"><strong>{{$invoice['vat_domestic'] or '---'}} {{$settings['domestic_currency'] or ''}}</strong></td>
+                                                <td class="right-align"><strong>{{number_format($invoice['vat_value_domestic'], $settings['decimals'])}} {{$settings['domestic_currency']}}</strong></td>
+                                                <td class="hide-on-med-and-down right-align"><strong>{{number_format($invoice['vat_value_foreign'], $settings['decimals'])}} {{$settings['foreign_currency']}}</strong></td>
                                             </tr>
                                             <tr>
                                                 <td class="hide-on-small-only"></td>
                                                 <td class="hide-on-small-only"></td>
                                                 <td><strong>TOTAL:</strong></td>
-                                                <td class="right-align"><strong>{{number_format($invoice['subtotal']+$invoice['vat_value'], $settings['decimals'])}} {{$product['currency']}}</strong></td>
-                                                <td class="hide-on-med-and-down right-align">
-                                                    <strong>
-                                                        @if (!empty($invoice['subtotal_domestic']))
-                                                            @if (!empty($invoice['vat_domestic']))
-                                                                {{$invoice['subtotal_domestic']+$invoice['vat_domestic']}}
-                                                            @else
-                                                                {{$invoice['subtotal_domestic']}}
-                                                            @endif
-                                                            {{$settings['domestic_currency'] or ''}}
-                                                        @endif
-                                                    </strong>
-                                                </td>
+                                                <td class="right-align"><strong>{{number_format($invoice['subtotal_domestic']+$invoice['vat_value_domestic'], $settings['decimals'])}} {{$settings['domestic_currency']}}</strong></td>
+                                                <td class="hide-on-med-and-down right-align"><strong>{{number_format($invoice['subtotal_foreign']+$invoice['vat_value_foreign'], $settings['decimals'])}} {{$settings['foreign_currency']}}</strong></td>
                                             </tr>
                                             </tbody>
                                         </table>
