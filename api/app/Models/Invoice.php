@@ -68,7 +68,7 @@ class Invoice extends Model
             $dateStart = '2000-01-01';
         if (empty($dateStop))
             $dateStop = date('Y-m-d');
-        return self::whereBetween('created_at',[$dateStart . ' 00:00:00', $dateStop . ' 23:59:59'])
+        return self::whereBetween('issued_on',[$dateStart, $dateStop])
             ->get();
     }
 
