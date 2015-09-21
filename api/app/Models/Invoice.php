@@ -69,6 +69,7 @@ class Invoice extends Model
         if (empty($dateStop))
             $dateStop = date('Y-m-d');
         return self::whereBetween('issued_on',[$dateStart, $dateStop])
+            ->orderBy('issued_on','DESC')
             ->get();
     }
 
