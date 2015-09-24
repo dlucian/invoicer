@@ -38,6 +38,7 @@ class InvoicerApi {
     {
         if (empty($this->settings))
             $this->settings = $this->callSetting();
+        ksort($this->settings);
         return $this->settings;
     }
 

@@ -35,4 +35,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/invoice/{id}/domestic', ['as' => 'invoice-domestic', 'uses' => 'InvoicesController@domestic']);
     Route::get('/invoice/{id}/foreign', ['as' => 'invoice-foreign', 'uses' => 'InvoicesController@foreign']);
+
+    Route::get('/settings', ['as' => 'settings-list', 'uses' => 'SettingsController@index']);
 });

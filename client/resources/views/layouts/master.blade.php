@@ -27,11 +27,13 @@
                 <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
 
                 <ul id="nav-desktop" class="right hide-on-med-and-down">
-                    <li><a href="{{route('invoices-list')}}" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Invoices List"><i class="material-icons">view_list</i></a></li>
+                    <li><a href="{{route('invoices-list')}}" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Invoices"><i class="material-icons">view_list</i></a></li>
+                    <li><a href="{{route('settings-list')}}" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Settings"><i class="material-icons">settings</i></a></li>
                     <li><a href="/auth/logout" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Logout"><i class="material-icons">power_settings_new</i></a></li>
                 </ul>
                 <ul id="nav-mobile" class="side-nav">
-                    <li><a href="{{route('invoices-list')}}">Invoices List</a></li>
+                    <li><a href="{{route('invoices-list')}}">Invoices</a></li>
+                    <li><a href="{{route('settings-list')}}">Settings</a></li>
                     <li><a href="/auth/logout">Logout</a></li>
                 </ul>
             </div>
