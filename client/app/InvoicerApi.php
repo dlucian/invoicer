@@ -42,6 +42,11 @@ class InvoicerApi {
         return $this->settings;
     }
 
+    public function updateSetting( $settingName, $settingValue )
+    {
+        return $this->callSetting('PUT', sprintf('/%s', $settingName), ['value' => $settingValue]);
+    }
+
     public function updateInvoice( $invoiceId, $invoiceData )
     {
         if (!empty($invoiceId)) {
@@ -169,12 +174,11 @@ class InvoicerApi {
     protected function callSetting( $action = 'GET', $resource = '', $data = array() )
     {
         $client = new Client();
-        $res = $client->request($action, $this->apiEndpoint . '/v1/setting' . $resource . '?key=' . $this->apiKey, $data);
+        $res = $client->request($action, $this->apiEndpoint . '/v1/setting' . $resource . '?key=' . $this->apiKey, ['form_params' => $data]);
         if ($res->getStatusCode() != 200)
             throw new Exception('Error requesting data.');
         if (!in_array('application/json', $res->getHeader('content-type')))
             throw new Exception('Invalid response content type.');
-
         return json_decode($res->getBody()->getContents(), true)['data'];
     }
 

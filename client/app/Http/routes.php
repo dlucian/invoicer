@@ -37,4 +37,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/invoice/{id}/foreign', ['as' => 'invoice-foreign', 'uses' => 'InvoicesController@foreign']);
 
     Route::get('/settings', ['as' => 'settings-list', 'uses' => 'SettingsController@index']);
+    Route::get('/setting/{id}', ['as' => 'setting-update', 'uses' => 'SettingsController@update']);
+    Route::post('/setting/{id}', ['as' => 'setting-update', 'uses' => 'SettingsController@store']);
 });

@@ -23,7 +23,8 @@
                         <tr>
                             <td>{{$name}}</td>
                             <td><pre>{{$value}}</pre></td>
-                            <td class="center-align"><a class="waves-effect waves-teal btn-flat"><i class="material-icons left">mode_edit</i> change</a></td>
+                            <td class="center-align"><a href="{{route('setting-update',$name)}}"
+                                class="waves-effect waves-teal btn-flat"><i class="material-icons left">mode_edit</i> change</a></td>
                         </tr>
                     @endforeach
                     </tbody>
