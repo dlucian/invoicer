@@ -47,6 +47,11 @@ class InvoicerApi {
         return $this->callSetting('PUT', sprintf('/%s', $settingName), ['value' => $settingValue]);
     }
 
+    public function deleteSetting( $settingName )
+    {
+        return $this->callSetting('DELETE', sprintf('/%s', $settingName));
+    }
+
     public function updateInvoice( $invoiceId, $invoiceData )
     {
         if (!empty($invoiceId)) {

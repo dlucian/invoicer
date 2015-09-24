@@ -23,8 +23,10 @@
                         <tr>
                             <td>{{$name}}</td>
                             <td><pre>{{$value}}</pre></td>
-                            <td class="center-align"><a href="{{route('setting-update',$name)}}"
-                                class="waves-effect waves-teal btn-flat"><i class="material-icons left">mode_edit</i> change</a></td>
+                            <td class="center-align">
+                                <a href="{{route('setting-update',$name)}}" class="waves-effect waves-teal btn-flat"><i class="material-icons">mode_edit</i></a>
+                                <a href="{{route('setting-delete',$name)}}" class="waves-effect waves-teal btn-flat delete-setting"><i class="material-icons">delete</i></a>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -34,5 +36,23 @@
         </div>
     </div>
 
-    @include('invoices/components/add-invoice')
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a href="{{route('setting-update','new')}}" class="btn-floating btn-large red tooltipped" data-position="left" data-delay="50" data-tooltip="New Setting">
+            <i class="large material-icons">add</i>
+        </a>
+    </div>
+@endsection
+
+
+
+@section('scripts')
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            $('.delete-setting').click(function(e) {
+                if (!confirm('Are you sure?')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 @endsection

@@ -5,9 +5,7 @@
 
 namespace App\Http\Controllers;
 
-use App\InvoicerApi;
 use Illuminate\Http\Request;
-use Validator;
 
 class SettingsController extends InvoicerController {
 
@@ -23,7 +21,17 @@ class SettingsController extends InvoicerController {
 
     public function store(Request $request, $settingName)
     {
-        $this->api->updateSetting( $settingName, $request->input('value') );
+        if (!empty($request->input('name')))
+            $settingName = $request->input('name');
+        if (!empty($settingName))
+            $this->api->updateSetting( $settingName, $request->input('value') );
+        return redirect(route('settings-list'));
+    }
+
+    public function delete(Request $request, $settingName)
+    {
+        if (!empty($settingName))
+            $this->api->deleteSetting( $settingName );
         return redirect(route('settings-list'));
     }
 

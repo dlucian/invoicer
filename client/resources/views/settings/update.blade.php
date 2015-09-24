@@ -6,13 +6,24 @@
     <div class="container">
         <div class="row">
             <form class="col s12" action="{{route('setting-update', $settingName)}}" method="post">
-                <h1>Setting: {{$settingName}}</h1>
+                @if ($settingName == 'new')
+                    <h1>New Setting</h1>
+                @else
+                    <h1>Setting: {{$settingName}}</h1>
+                @endif
+
 
                 <div class="row">
                     {{csrf_field()}}
+                    @if ($settingName == 'new')
+                        <div class="input-field col s6">
+                            <textarea id="setting-name" name="name" class="materialize-textarea" placeholder="setting_name"></textarea>
+                            <label for="setting-name">Name</label>
+                        </div>
+                    @endif
                     <div class="input-field col s6">
-                        <textarea id="setting-value" name="value" class="materialize-textarea">{{$settings[$settingName]}}</textarea>
-                        <label for="setting-value">Setting Value</label>
+                        <textarea id="setting-value" name="value" class="materialize-textarea">{{$settings[$settingName] or ''}}</textarea>
+                        <label for="setting-value">Value</label>
                     </div>
                 </div>
                 <div class="row">
