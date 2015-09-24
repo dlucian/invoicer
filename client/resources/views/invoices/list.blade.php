@@ -45,8 +45,8 @@
                             <td>{{date('j-M-Y', strtotime($invoice['issued_on']))}}</td>
                             <td class="hide-on-small-only">{{$invoice['buyer_name']}}</td>
                             <td class="hide-on-med-and-down">{{$invoice['base_currency']}}</td>
-                            <td class="right-align">{{number_format($invoice['subtotal_domestic'], 2)}}</td>
-                            <td class="hide-on-med-and-down right-align">{{!empty($invoice['subtotal_foreign']) ? number_format($invoice['subtotal_foreign'], 2) : '---'}}</td>
+                            <td class="right-align">{{number_format($invoice['subtotal_domestic'], $settings['decimals'])}}</td>
+                            <td class="hide-on-med-and-down right-align">{{!empty($invoice['subtotal_foreign']) ? number_format($invoice['subtotal_foreign'], $settings['decimals']) : '---'}}</td>
                         </tr>
                     @endforeach
                     <tr class="">
@@ -54,8 +54,8 @@
                         <td class=""></td>
                         <td class="hide-on-small-only"><strong>TOTAL</strong></td>
                         <td class="hide-on-med-and-down"></td>
-                        <td class="right-align"><strong>{{number_format($totals['domestic'], 2)}}</strong></td>
-                        <td class="hide-on-med-and-down right-align"><strong>{{number_format($totals['foreign'],2 )}}</strong></td>
+                        <td class="right-align"><strong>{{number_format($totals['domestic'], $settings['decimals'])}}</strong></td>
+                        <td class="hide-on-med-and-down right-align"><strong>{{number_format($totals['foreign'],$settings['decimals'])}}</strong></td>
                     </tr>
                     </tbody>
                 </table>
