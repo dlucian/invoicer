@@ -62,13 +62,25 @@ class Invoice extends Model
         return $saved;
     }
 
-    public static function allBetween( $dateStart = '', $dateStop = '' )
+    public static function allBetween( $dateStart = '', $dateStop = '', $search = '' )
     {
         if (empty($dateStart))
             $dateStart = '2000-01-01';
         if (empty($dateStop))
             $dateStop = date('Y-m-d');
-        return self::whereBetween('issued_on',[$dateStart, $dateStop])
+
+        $allBetween = self::whereBetween('issued_on',[$dateStart, $dateStop]);
+        if (!empty($search))
+            $allBetween = $allBetween->where(function($query) use($search){
+                $query->where('invoice', 'like', "%{$search}%")
+                    ->orWhere('buyer_name', 'like', "%{$search}%")
+                    ->orWhere('buyer_info', 'like', "%{$search}%")
+                    ->orWhere('products', 'like', "%{$search}%")
+                    ->orWhere('receiver_info', 'like', "%{$search}%")
+                    ->orWhere('extra', 'like', "%{$search}%");
+            });
+
+        return $allBetween
             ->orderBy('issued_on','DESC')
             ->get();
     }
