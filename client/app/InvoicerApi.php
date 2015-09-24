@@ -34,24 +34,6 @@ class InvoicerApi {
         return $this->unpackProducts($invoice);
     }
 
-    public function settings()
-    {
-        if (empty($this->settings))
-            $this->settings = $this->callSetting();
-        ksort($this->settings);
-        return $this->settings;
-    }
-
-    public function updateSetting( $settingName, $settingValue )
-    {
-        return $this->callSetting('PUT', sprintf('/%s', $settingName), ['value' => $settingValue]);
-    }
-
-    public function deleteSetting( $settingName )
-    {
-        return $this->callSetting('DELETE', sprintf('/%s', $settingName));
-    }
-
     public function updateInvoice( $invoiceId, $invoiceData )
     {
         if (!empty($invoiceId)) {
@@ -185,6 +167,24 @@ class InvoicerApi {
         if (!in_array('application/json', $res->getHeader('content-type')))
             throw new Exception('Invalid response content type.');
         return json_decode($res->getBody()->getContents(), true)['data'];
+    }
+
+    public function settings()
+    {
+        if (empty($this->settings))
+            $this->settings = $this->callSetting();
+        ksort($this->settings);
+        return $this->settings;
+    }
+
+    public function updateSetting( $settingName, $settingValue )
+    {
+        return $this->callSetting('PUT', sprintf('/%s', $settingName), ['value' => $settingValue]);
+    }
+
+    public function deleteSetting( $settingName )
+    {
+        return $this->callSetting('DELETE', sprintf('/%s', $settingName));
     }
 
 } // END class
