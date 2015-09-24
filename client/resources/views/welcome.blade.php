@@ -39,7 +39,7 @@
         <div class="container">
             <div class="content">
                 <div class="title">Invoicer</div>
-                <a href="{{route('invoices-list')}}">Invoices List</a>
+                <a href="{{route('home')}}">Show me!</a>
             </div>
         </div>
     </body>
