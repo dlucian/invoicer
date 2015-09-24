@@ -31,6 +31,17 @@
                     <li><a href="{{route('settings-list')}}" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Settings"><i class="material-icons">settings</i></a></li>
                     <li><a href="/auth/logout" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Logout"><i class="material-icons">power_settings_new</i></a></li>
                 </ul>
+
+                <form class="right hide-on-med-and-down" action="{{route('invoices-list')}}" method="get">
+                    <div class="input-field">
+                        <input name="query" id="search" type="search" required>
+                        <input type="hidden" name="from" value="2000-01-01">
+                        <input type="hidden" name="to" value="{{date('Y-m-d')}}">
+                        <label for="search"><i class="material-icons">search</i></label>
+                        <i class="material-icons">close</i>
+                    </div>
+                </form>
+
                 <ul id="nav-mobile" class="side-nav">
                     <li><a href="{{route('invoices-list')}}">Invoices</a></li>
                     <li><a href="{{route('settings-list')}}">Settings</a></li>

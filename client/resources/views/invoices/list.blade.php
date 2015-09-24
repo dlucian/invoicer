@@ -21,10 +21,8 @@
                     @for ($i = 3; $i <= 12; $i++)
                         <a href="?from={{date('Y-m-d', strtotime(date('Y-m').'-01' . ' -'. $i .' month'))}}&to={{date('Y-m-d', strtotime(date('Y-m-d', strtotime(date('Y-m').'-01' . ' -'. $i .' month')).' +1 month')-1)}}" class="waves-effect waves-teal btn-flat">{{date('M', strtotime(date('Y-m').'-01' . ' -'. $i .' month'))}}</a>
                     @endfor
+                    <a href="?from=2000-01-01&to={{date('Y-m-d')}}" class="waves-effect waves-teal btn-flat">all</a>
                 </ul>
-
-
-
 
                 <table>
                     <thead>

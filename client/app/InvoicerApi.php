@@ -19,9 +19,9 @@ class InvoicerApi {
         $this->apiKey = $invoicerApiKey;
     }
 
-    public function invoices( $from, $to )
+    public function invoices( $from, $to, $search = '' )
     {
-        $invoices = $this->call('GET', '?created_after=' . $from . '&created_before=' . $to );
+        $invoices = $this->call('GET', '?created_after=' . $from . '&created_before=' . $to . '&search=' . $search );
         foreach ($invoices as & $invoice) {
             $invoice = $this->unpackProducts($invoice);
         }
