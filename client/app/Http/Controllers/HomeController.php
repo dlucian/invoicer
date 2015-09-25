@@ -28,7 +28,7 @@ class HomeController extends InvoicerController {
             'invoices'  => $invoices,
             'totals'    => $this->api->totals($invoices),
             'settings'  => $settings,
-            'monthly'   => $monthly,
+            'monthly'   => array_reverse($monthly),
         ]);
     }
 
