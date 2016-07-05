@@ -10,7 +10,7 @@ use App\Models\Setting;
 
 class Validation extends Validator
 {
-    public function validateJson($attribute, $value, $parameters)
+    public function validateJson($attribute, $value)
     {
         return !is_null(json_decode($value));
     }
