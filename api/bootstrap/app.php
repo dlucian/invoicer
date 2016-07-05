@@ -3,6 +3,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 Dotenv::load(__DIR__.'/../', !empty($_ENV['APP_ENV']) && $_ENV['APP_ENV'] == 'testing' ? '.env.testing' : '.env');
+//Dotenv::load(__DIR__.'/../', '.env.testing');
 
 /*
 |--------------------------------------------------------------------------
