@@ -49,12 +49,14 @@ The settings are stored in the `settings` table. Update these to your own needs 
 * **`seller_name`** *(string)* The seller's name (company who sells goods or services).
 * **`seller_info`** *(text)* Seller information such as registration number, address, bank account, social capital etc.
 * **`issuer`** *(string)* Name of the person that issues the invoices (usually someone from your company).
+* **`issuer_info`** *(string)* Information related to the person that issues the invoices.
 * **`vat_percent`** *(string)* Standard VAT percent (although please take into consideration that EU companies should bill VAT percent according to the buyers country of residence, not sellers).
 * **`decimals`** *(numeric)* Number of decimals for pricing values.
 * **`domestic_currency`** *(string)* Usually `RON` or the currency code in the seller's country.
 * **`domestic_language`** *(string)* Lowercase two-letter language code for the domestic invoice copy (ex. `ro`).
 * **`foreign_currency`** *(string)* Foreign currency such as `USD`
-* **`foreign_language`** *(string)* Foreign invocing language such as `en`
+* **`foreign_language`** *(string)* Foreign invoicing language such as `en`
+* **`branding_label`** *(string)* Big label to display on the invoice
 
 ### Currency exchange rates
 
