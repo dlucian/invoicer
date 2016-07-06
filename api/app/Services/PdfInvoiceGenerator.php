@@ -86,13 +86,13 @@ class PdfInvoiceGenerator {
         $pdf->CreateTextBox($invoice->seller_name, 0, 43, 90, 8, 'proximanova-bold', 14);
         $pdf->SetXY(0 + $pdf->marginLeft, 49 );
         $pdf->SetFont('arialn', '', 11 );
-        $pdf->MultiCell(90, 30, str_replace('\n',"\n",$invoice->seller_info), 0, 'L', false );
+        $pdf->MultiCell(90, 30, str_replace('\n',"\n",$invoice->seller_info) . "\n\n" . $invoice->issuer_info, 0, 'L', false );
 
         $pdf->CreateTextBox( ucwords(self::trans('buyer')), 95, 38, 90, 6, 'proximanovacond-regular', 11, '', 'L', array( 88, 85, 112 ) );
         $pdf->CreateTextBox($invoice->buyer_name, 95, 43, 90, 8, 'proximanova-bold', 14);
         $pdf->SetXY(95 + $pdf->marginLeft, 49 );
         $pdf->SetFont('arialn', '', 11 );
-        $pdf->MultiCell(90, 30, str_replace('\n',"\n",$invoice->buyer_info), 0, 'L', false );
+        $pdf->MultiCell(90, 30, str_replace('\n',"\n",$invoice->buyer_info) . "\n\n" . $invoice->receiver_info, 0, 'L', false );
 
         $aPosition[ 'id' ] = 0;
         $aPosition[ 'desc' ] = 9;
@@ -100,14 +100,14 @@ class PdfInvoiceGenerator {
         $aPosition[ 'unit' ] = 98;
         $aPosition[ 'total' ] = 135; // 145
 
-        $tableHeaderTop = 103;
+        $tableHeaderTop = 120; // previously 103
         $pdf->CreateTextBox( strtoupper(self::trans('id')), $aPosition[ 'id' ], $tableHeaderTop, 8, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
         $pdf->CreateTextBox( ucwords(self::trans('description')), $aPosition[ 'desc' ], $tableHeaderTop, 70, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
         $pdf->CreateTextBox( ucwords(self::trans('quantity')), $aPosition[ 'quant' ], $tableHeaderTop, 17, 6, 'proximanovacond-regular', 11, 'B', 'R', array( 88, 85, 112 ) );
         $pdf->CreateTextBox( ucwords(self::trans('unit price')), $aPosition[ 'unit' ], $tableHeaderTop, 36, 6, 'proximanovacond-regular', 11, 'B', 'R', array( 88, 85, 112 ) );
         $pdf->CreateTextBox( ucwords(self::trans('total')), $aPosition[ 'total' ], $tableHeaderTop, 40, 6, 'proximanovacond-regular', 11, 'B', 'R', array( 88, 85, 112 ) );
         $pdf->SetLineStyle( array( 'width' => 0.2, 'color' => array( 88, 85, 112 ) ) );
-        $pdf->Line($pdf->marginLeft, 109, 197, 109 );
+        $pdf->Line($pdf->marginLeft, $tableHeaderTop + 6, 197, $tableHeaderTop + 6 );
 
         $orders = array();
         foreach( $invoice->getProducts() as $product ) {
@@ -134,7 +134,7 @@ class PdfInvoiceGenerator {
             $orders[] = $aOrder;
         }
 
-        $currY = 111;
+        $currY = $tableHeaderTop + 8;
         $total = 0;
         $total2 = 0;
         $iItem = 0;
@@ -199,29 +199,6 @@ class PdfInvoiceGenerator {
 
         $currY = $currY + 25;
 
-        if (!empty($invoice->issuer_info)) {
-            $pdf->CreateTextBox( ucwords(self::trans('issued by')), 0, $currY + 2, 40, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
-            $pdf->Line($pdf->marginLeft, $currY+8, $pdf->marginLeft + 60, $currY+8 );
-
-            $pdf->SetTextColor( 33, 33, 33 );
-            $pdf->SetXY( $pdf->marginLeft, $currY + 9 );
-            $pdf->SetFont('proximanova-regular', '', 11.22 );
-            $pdf->MultiCell(60, 30, $invoice->issuer_info, 0, 'L', false );
-        }
-
-        if (!empty($invoice->receiver_info)) {
-            $pdf->CreateTextBox( ucwords(self::trans('customer')), 100, $currY + 2, 40, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
-            $pdf->Line($pdf->marginLeft + 100, $currY+8, $pdf->marginLeft + 100 + 60, $currY+8 );
-
-            $pdf->SetTextColor( 33, 33, 33 );
-            $pdf->SetXY( $pdf->marginLeft + 100, $currY + 9 );
-            $pdf->SetFont('proximanova-regular', '', 11.22 );
-            $pdf->MultiCell(65, 30, $invoice->receiver_info, 0, 'L', false );
-        }
-
-        if (!empty($invoice->issuer_info) || !empty($invoice->receiver_info)) {
-            $currY = $currY + 30;
-        }
 
         if (self::$invoiceType == 'domestic' && $invoice->isForeign()) {
             $invoice->extra .= sprintf("<br><br>%s: %.2f %s + TVA %.2f%% = %s %s", ucfirst(self::trans('billed amount')), $total2, $invoice->foreignCurrency(),
@@ -298,10 +275,10 @@ class PdfInvoiceGenerator {
             'total'  => 'total',
             'subtotal'  => 'subtotal',
             'VAT %.2f%%'  => 'TVA %.2f%%',
-            'invoice total'  => 'total facturat',
+            'invoice total'  => 'total',
             'issued by'  => 'emisa de',
             'customer'  => 'delegat',
-            'billed amount' => 'valoare incasata',
+            'billed amount' => 'valoare in valuta',
             'exchange rate on %s' => 'Curs de schimb la %s',
         );
     }
