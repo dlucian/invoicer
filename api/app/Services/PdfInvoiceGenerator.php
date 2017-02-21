@@ -215,7 +215,7 @@ class PdfInvoiceGenerator {
         // some payment instructions or information
         $pdf->setXY(20, $currY);
         $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 10);
-        $pdf->MultiCell(175, 10, $invoice->extra, 0, 'L', 0, 1, '', '', true, null, true);
+        $pdf->MultiCell(175, 10, nl2br( $invoice->extra ), 0, 'L', 0, 1, '', '', true, null, true);
 
         // ---------------------------------------------------------
         return $pdf->Output('example_001.pdf', 'S');
