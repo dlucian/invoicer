@@ -54,9 +54,10 @@ class Invoice extends Model
         if (empty($this->issued_on))
             $this->issued_on = date('Y-m-d');
 
+        $is_new = !$this->id;
         $saved = parent::save();
 
-        if ($saved)
+        if ($saved && $is_new)
             $this->prepareNextInvoice();
 
         return $saved;
