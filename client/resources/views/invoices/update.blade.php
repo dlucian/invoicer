@@ -77,7 +77,7 @@
                     <div class="section">
                         <h4>Products</h4>
 
-                        @for ($i=0;$i<3;$i++)
+                        @for ($i=0; $i<6; $i++)
                         <div class="row">
                             <div class="input-field col s12 m6">
                                 <input id="seller_name" name="description[{{$i}}]" type="text" class="validate"
