@@ -1,0 +1,38 @@
+version: '3.0'
+services:
+  api:
+    container_name: "invoicer-api"
+    network_mode: "bridge"
+    image: "webdevops/php-nginx"
+    environment:
+      OWNER_UID: 1000
+      WEB_DOCUMENT_ROOT: /var/www/html/public
+    ports:
+      - "8100:80"
+    volumes:
+      - ./api:/var/www/html
+    links:
+      - mysql
+  client:
+    container_name: "invoicer-client"
+    network_mode: "bridge"
+    image: "webdevops/php-nginx"
+    environment:
+      OWNER_UID: 1000
+      WEB_DOCUMENT_ROOT: /var/www/html/public
+    ports:
+      - "8200:80"
+    volumes:
+      - ./client:/var/www/html
+    links:
+      - mysql
+      - api
+  mysql:
+    network_mode: "bridge"
+    image: "mysql:5.7"
+    container_name: "invoicer-db"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=invoicer
+    volumes:
+      - ./docker-mysql-data:/var/lib/mysql

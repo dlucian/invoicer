@@ -365,6 +365,65 @@ Response:
 }
 ```
 
+### Run in Docker
+
+To build the containers, run:
+
+```
+docker-compose up -d
+```
+
+It will create 3 containers:
+- invoicer-api - URL: localhost:8100
+- invoicer-client - URL: localhost:8200
+- invoicer-db
+
+Modify .env files for both API and client, to connect to invoicer-db container for MySQL data:
+
+```
+DB_HOST=mysql
+DB_DATABASE=invoicer
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+
+For client's .env file, change INVOICER_ENDPOINT to point to invoicer-api container:
+
+```
+INVOICER_ENDPOINT=http://api
+```
+
+Connect to invoicer-client container:
+
+```
+docker exec -it  -e COLUMNS="`tput cols`" -e LINES="`tput lines`" invoicer-client bash
+```
+
+Then run the migration:
+
+```
+cd /var/www/html
+php artisan migrate
+```
+
+Connect to invoicer-api container:
+
+```
+docker exec -it  -e COLUMNS="`tput cols`" -e LINES="`tput lines`" invoicer-api bash
+```
+
+Then run the migration and db seed:
+
+```
+cd /var/www/html
+php artisan migrate
+php artisan db:seed
+```
+
+These 2 steps should be done only once, MySQL data is being persisted in ./docker-mysql-data folder.
+
+In browser open **http://localhost:8200** and use the credentials for the default user: **user@email.com / password**
+
 ### Tests
 
 Invoicer contains a small suite of tests to check the integrity of the operations. Tests are stored in the `tests` folder. Feel free to add more tests as you see fit. 
