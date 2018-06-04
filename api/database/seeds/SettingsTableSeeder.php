@@ -22,6 +22,10 @@ class SettingsTableSeeder extends Seeder
             [ 'name' => 'branding',    'value' => 'Invocerware' ],
             [ 'name' => 'decimals',         'value' => '2' ],
             [ 'name' => 'domestic_currency', 'value' => 'RON' ],
+            [ 'name' => 'foreign_currency', 'value' => 'RON' ],
+            [ 'name' => 'issuer_info', 'value' => '' ],
+            [ 'name' => 'branding_label', 'value' => '' ],
+
         ]);
     }
 }

@@ -4,3 +4,4 @@ bootstrap/compiled.php
 .env
 .DS_Store
 .idea
+./docker-mysql-data/*
