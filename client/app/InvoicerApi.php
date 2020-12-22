@@ -150,7 +150,7 @@ class InvoicerApi {
         if ($res->getStatusCode() != 200)
             throw new Exception('Error requesting data.');
         if (!in_array('application/json', $res->getHeader('content-type')))
-            throw new Exception('Invalid response content type.');
+            throw new Exception('Invalid response content type, response was:' . $res->getBody()->getContents());
 
         $output = json_decode($res->getBody()->getContents(), true);
         if ($output['code'] != 0)
@@ -165,7 +165,7 @@ class InvoicerApi {
         if ($res->getStatusCode() != 200)
             throw new Exception('Error requesting data.');
         if (!in_array('application/json', $res->getHeader('content-type')))
-            throw new Exception('Invalid response content type.');
+            throw new Exception('Invalid response content type, response was:' . $res->getBody()->getContents());
         return json_decode($res->getBody()->getContents(), true)['data'];
     }
 

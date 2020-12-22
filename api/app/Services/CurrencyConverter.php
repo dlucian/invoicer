@@ -61,12 +61,18 @@ class CurrencyConverter {
     protected function retrieveRemote()
     {
         $client = new Client();
-        $res = $client->request('GET', sprintf('http://openapi.ro/api/exchange/%s.json?date=%s', strtolower($this->foreignCurrency), $this->date));
+        $res = $client->request(
+            'GET',
+            sprintf('http://api.openapi.ro/api/exchange/%s.json?date=%s', strtolower($this->foreignCurrency), $this->date),
+	    ['headers' => ['x-api-key' => 'API-KEY-HERE']]
+	);
         if ($res->getStatusCode() == 200) {
             $responseJson = (string)$res->getBody();
             $exchangeRate = json_decode( $responseJson );
-            $this->persistLocal( $exchangeRate->rate );
-            return $exchangeRate->rate;
+            if (empty($exchangeRate['error'])) {
+            	$this->persistLocal( $exchangeRate->rate );
+            	return $exchangeRate->rate;
+	    }
         }
         return false;
     }
