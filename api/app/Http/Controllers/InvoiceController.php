@@ -15,7 +15,7 @@ class InvoiceController extends Controller
     public function index(Request $request)
     {
         $invoices = Invoice::allBetween(
-            $request->input('created_after', '2000-01-01'), $request->input('created_before', date('Y-m-d')), $request->input('search', '')
+            $request->get('created_after', '2000-01-01'), $request->get('created_before', date('Y-m-d')), $request->get('search', '')
         );
         foreach ($invoices as & $invoice)
             $invoice->attachExchangeInfo();

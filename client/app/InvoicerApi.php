@@ -97,6 +97,9 @@ class InvoicerApi {
                 $subTotalDomestic += $product['price_domestic'] * $product['quantity'];
                 $baseCurrency = $product['currency'];
             } else {
+                if (!is_numeric($product['price']) || !is_numeric($product['quantity'])) {
+                    dump($invoice); dump($product); die('Found non numeric product');
+                }
                 $subTotalDomestic += $product['price'] * $product['quantity'];
                 $baseCurrency = $this->settings['domestic_currency'];
             }

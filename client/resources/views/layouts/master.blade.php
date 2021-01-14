@@ -22,16 +22,21 @@
 
 <nav>
     <div class="nav-wrapper">
-        <div class="row">
-            <div class="col s12">
-                <a href="{{route('home')}}" class="brand-logo">Invoicer</a>
-                <ul class="right">
-                    <li><a href="{{route('invoices-list')}}">Invoices</a></li>
-                    <li><a href="{{route('settings-list')}}">Settings</a></li>
-                    <li><a href="/auth/logout">Logout</a></li>
-                </ul>
-            </div>
+        <a href="{{route('home')}}" class="brand-logo">Invoicer</a>
+        <div style="width: 30vw; height: 100%; position: relative; display: inline-block; margin-left: 20vw;">
+            <form action="{{route('invoices-list')}}" method="get">
+                <div class="input-field">
+                    <input id="search" name="query" value="{{app('request')->input('query')}}" type="search" required>
+                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                    <i class="material-icons">close</i>
+                </div>
+            </form>
         </div>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="{{route('invoices-list')}}">Invoices</a></li>
+            <li><a href="{{route('settings-list')}}">Settings</a></li>
+            <li><a href="/auth/logout">Logout</a></li>
+        </ul>
     </div>
 </nav>
 

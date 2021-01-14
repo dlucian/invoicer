@@ -63,10 +63,8 @@ class Invoice extends Model
         return $saved;
     }
 
-    public static function allBetween( $dateStart = '', $dateStop = '', $search = '' )
+    public static function allBetween( $dateStart = '2000-01-01', $dateStop = null, $search = '' )
     {
-        if (empty($dateStart))
-            $dateStart = '2000-01-01';
         if (empty($dateStop))
             $dateStop = date('Y-m-d');
 

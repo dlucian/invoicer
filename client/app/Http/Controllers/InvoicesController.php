@@ -10,7 +10,7 @@ class InvoicesController extends InvoicerController {
 
     public function index( Request $request )
     {
-        $from = $request->input('from', date('Y-m-d',strtotime('-3 months')));
+        $from = $request->input('from', date('Y-m-d',strtotime('-12 months')));
         $to = $request->input('to');
         $invoices = $this->api->invoices($from, $to, $request->input('query'));
         $settings = $this->api->settings();
