@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Services\TCPDF\TCPDF;
+require_once(dirname(__FILE__) . '/TCPDF/tcpdf.php');
+
 use App\Models\Setting;
 
 class PdfInvoiceGenerator {
@@ -48,14 +49,14 @@ class PdfInvoiceGenerator {
         $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
         $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
-        $pdf->AddFont('arial');
-        $pdf->AddFont('arialbd');
-        $pdf->AddFont('ariali');
-        $pdf->AddFont('arialn');
-        $pdf->AddFont('proximanova-bold');
-        $pdf->AddFont('proximanova-regular');
-        $pdf->AddFont('proximanovacond-regular');
-        $pdf->AddFont('titilliumtext25l');
+        $pdf->AddFont('arial', '', dirname(__FILE__) . '/fonts/arial.php');
+        $pdf->AddFont('arialbd', '', dirname(__FILE__) . '/fonts/arialbd.php');
+        $pdf->AddFont('ariali', '', dirname(__FILE__) . '/fonts/ariali.php');
+        $pdf->AddFont('arialn', '', dirname(__FILE__) . '/fonts/arialn.php');
+        $pdf->AddFont('proximanova-bold', '', dirname(__FILE__) . '/fonts/proximanova-bold.php');
+        $pdf->AddFont('proximanova-regular', '', dirname(__FILE__) . '/fonts/proximanova-regular.php');
+        $pdf->AddFont('proximanovacond-regular', '', dirname(__FILE__) . '/fonts/proximanovacond-regular.php');
+        $pdf->AddFont('titilliumtext25l', '', dirname(__FILE__) . '/fonts/titilliumtext25l.php');
 
         // ---------------------------------------------------------
 
@@ -101,11 +102,11 @@ class PdfInvoiceGenerator {
         $aPosition[ 'total' ] = 135; // 145
 
         $tableHeaderTop = 120; // previously 103
-        $pdf->CreateTextBox( strtoupper(self::trans('id')), $aPosition[ 'id' ], $tableHeaderTop, 8, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
-        $pdf->CreateTextBox( ucwords(self::trans('description')), $aPosition[ 'desc' ], $tableHeaderTop, 70, 6, 'proximanovacond-regular', 11, 'B', 'L', array( 88, 85, 112 ) );
-        $pdf->CreateTextBox( ucwords(self::trans('quantity')), $aPosition[ 'quant' ], $tableHeaderTop, 17, 6, 'proximanovacond-regular', 11, 'B', 'R', array( 88, 85, 112 ) );
-        $pdf->CreateTextBox( ucwords(self::trans('unit price')), $aPosition[ 'unit' ], $tableHeaderTop, 36, 6, 'proximanovacond-regular', 11, 'B', 'R', array( 88, 85, 112 ) );
-        $pdf->CreateTextBox( ucwords(self::trans('total')), $aPosition[ 'total' ], $tableHeaderTop, 40, 6, 'proximanovacond-regular', 11, 'B', 'R', array( 88, 85, 112 ) );
+        $pdf->CreateTextBox( strtoupper(self::trans('id')), $aPosition[ 'id' ], $tableHeaderTop, 8, 6, 'proximanovacond-regular', 11, '', 'L', array( 88, 85, 112 ) );
+        $pdf->CreateTextBox( ucwords(self::trans('description')), $aPosition[ 'desc' ], $tableHeaderTop, 70, 6, 'proximanovacond-regular', 11, '', 'L', array( 88, 85, 112 ) );
+        $pdf->CreateTextBox( ucwords(self::trans('quantity')), $aPosition[ 'quant' ], $tableHeaderTop, 17, 6, 'proximanovacond-regular', 11, '', 'R', array( 88, 85, 112 ) );
+        $pdf->CreateTextBox( ucwords(self::trans('unit price')), $aPosition[ 'unit' ], $tableHeaderTop, 36, 6, 'proximanovacond-regular', 11, '', 'R', array( 88, 85, 112 ) );
+        $pdf->CreateTextBox( ucwords(self::trans('total')), $aPosition[ 'total' ], $tableHeaderTop, 40, 6, 'proximanovacond-regular', 11, '', 'R', array( 88, 85, 112 ) );
         $pdf->SetLineStyle( array( 'width' => 0.2, 'color' => array( 88, 85, 112 ) ) );
         $pdf->Line($pdf->marginLeft, $tableHeaderTop + 6, 197, $tableHeaderTop + 6 );
 
@@ -286,7 +287,7 @@ class PdfInvoiceGenerator {
 
 
 // Extend the TCPDF class to create custom Header and Footer
-class MYPDF extends TCPDF {
+class MYPDF extends \TCPDF {
 
     public $marginLeft = 0;
 

@@ -1,0 +1,3 @@
+[submodule "api/app/Services/TCPDF"]
+	path = api/app/Services/TCPDF
+	url = git@github.com:tecnickcom/TCPDF.git
