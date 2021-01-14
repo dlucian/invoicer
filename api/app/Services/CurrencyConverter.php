@@ -12,12 +12,13 @@ namespace App\Services;
 use \GuzzleHttp\Client;
 use \App\Models\Currency;
 
-class CurrencyConverter {
+class CurrencyConverter
+{
 
     private $date = '';
     private $foreignCurrency = '';
 
-    public function __construct( $date = '', $currency = 'USD' )
+    public function __construct($date = '', $currency = 'USD')
     {
         if (empty($date))
             $date = date('Y-m-d');
@@ -25,22 +26,22 @@ class CurrencyConverter {
         $this->foreignCurrency = $currency;
     }
 
-    public function convert( $foreignValue )
+    public function convert($foreignValue)
     {
         $exchangeRate = $this->retrieveRate();
-        if( $exchangeRate === false )
+        if ($exchangeRate === false)
             return $exchangeRate;
 
         return $exchangeRate * $foreignValue;
     }
 
-    public static function toForeign( $value, $currency, $date = '' )
+    public static function toForeign($value, $currency, $date = '')
     {
         $currency = new CurrencyConverter($date, $currency);
-        return $currency->convert( $value );
+        return $currency->convert($value);
     }
 
-    public static function getRate( $currency, $date )
+    public static function getRate($currency, $date)
     {
         $currency = new CurrencyConverter($date, $currency);
         return $currency->retrieveRate();
@@ -55,30 +56,32 @@ class CurrencyConverter {
 
     protected function retrieveLocal()
     {
-        return Currency::retrieve( $this->foreignCurrency, $this->date );
+        return Currency::retrieve($this->foreignCurrency, $this->date);
     }
 
     protected function retrieveRemote()
     {
         $client = new Client();
+        $url = sprintf('http://api.openapi.ro/api/exchange/%s.json?date=%s', strtolower($this->foreignCurrency), $this->date);
         $res = $client->request(
             'GET',
-            sprintf('http://api.openapi.ro/api/exchange/%s.json?date=%s', strtolower($this->foreignCurrency), $this->date),
-	    ['headers' => ['x-api-key' => 'API-KEY-HERE']]
-	);
+            $url,
+            ['headers' => ['x-api-key' => env('OPENAPI_KEY')]]
+        );
+
         if ($res->getStatusCode() == 200) {
             $responseJson = (string)$res->getBody();
-            $exchangeRate = json_decode( $responseJson );
-            if (empty($exchangeRate['error'])) {
-            	$this->persistLocal( $exchangeRate->rate );
-            	return $exchangeRate->rate;
-	    }
+            $exchangeRate = json_decode($responseJson);
+            if (!empty($exchangeRate->rate)) {
+                $this->persistLocal($exchangeRate->rate);
+                return $exchangeRate->rate;
+            }
         }
         return false;
     }
 
-    protected function persistLocal( $exchangeRate )
+    protected function persistLocal($exchangeRate)
     {
-        Currency::persist( $this->foreignCurrency, $this->date, $exchangeRate );
+        Currency::persist($this->foreignCurrency, $this->date, $exchangeRate);
     }
 }
