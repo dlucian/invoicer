@@ -80,24 +80,24 @@
                         @for ($i=0; $i<6; $i++)
                         <div class="row">
                             <div class="input-field col s12 m6">
-                                <input id="seller_name" name="description[{{$i}}]" type="text" class="validate"
+                                <input id="description[{{$i}}]" name="description[{{$i}}]" type="text" class="validate"
                                        value="{{Input::old('description.' . $i, !empty($invoice['products'][$i]['description']) ? $invoice['products'][$i]['description'] : '')}}">
-                                <label for="seller_name">Description</label>
+                                <label for="description[{{$i}}]">Description</label>
                             </div>
                             <div class="input-field col s4 m1">
-                                <input id="buyer_name" name="quantity[{{$i}}]" type="text" class="validate"
+                                <input id="quantity[{{$i}}]" name="quantity[{{$i}}]" type="text" class="validate"
                                        value="{{Input::old('quantity.' . $i, !empty($invoice['products'][$i]['quantity']) ? $invoice['products'][$i]['quantity'] : '')}}">
-                                <label for="buyer_name">Quantity</label>
+                                <label for="quantity[{{$i}}]">Quantity</label>
                             </div>
                             <div class="input-field col s4 m3">
-                                <input id="buyer_name" name="price[{{$i}}]" type="text" class="validate"
+                                <input id="price[{{$i}}]" name="price[{{$i}}]" type="text" class="validate"
                                        value="{{Input::old('price.' . $i, !empty($invoice['products'][$i]['price']) ? $invoice['products'][$i]['price'] : '')}}">
-                                <label for="buyer_name">Price</label>
+                                <label for="price[{{$i}}]">Price</label>
                             </div>
                             <div class="input-field col s4 m2">
-                                <input id="buyer_name" name="currency[{{$i}}]" type="text" class="validate"
+                                <input id="currency[{{$i}}]" name="currency[{{$i}}]" type="text" class="validate"
                                        value="{{Input::old('currency.' . $i, !empty($invoice['products'][$i]['currency']) ? $invoice['products'][$i]['currency'] : '')}}">
-                                <label for="buyer_name">Currency</label>
+                                <label for="currency[{{$i}}]">Currency</label>
                             </div>
                         </div>
                         @endfor
