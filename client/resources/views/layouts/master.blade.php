@@ -5,7 +5,7 @@
     <!--Import Google Icon Font-->
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link type="text/css" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css"  media="screen,projection"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -25,25 +25,7 @@
         <div class="row">
             <div class="col s12">
                 <a href="{{route('home')}}" class="brand-logo">Invoicer</a>
-                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-
-                <ul id="nav-desktop" class="right hide-on-med-and-down">
-                    <li><a href="{{route('invoices-list')}}" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Invoices"><i class="material-icons">view_list</i></a></li>
-                    <li><a href="{{route('settings-list')}}" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Settings"><i class="material-icons">settings</i></a></li>
-                    <li><a href="/auth/logout" class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="Logout"><i class="material-icons">power_settings_new</i></a></li>
-                </ul>
-
-                <form class="right hide-on-med-and-down" action="{{route('invoices-list')}}" method="get">
-                    <div class="input-field">
-                        <input name="query" id="search" type="search" required>
-                        <input type="hidden" name="from" value="2000-01-01">
-                        <input type="hidden" name="to" value="{{date('Y-m-d')}}">
-                        <label for="search"><i class="material-icons">search</i></label>
-                        <i class="material-icons">close</i>
-                    </div>
-                </form>
-
-                <ul id="nav-mobile" class="side-nav">
+                <ul class="right">
                     <li><a href="{{route('invoices-list')}}">Invoices</a></li>
                     <li><a href="{{route('settings-list')}}">Settings</a></li>
                     <li><a href="/auth/logout">Logout</a></li>
@@ -52,6 +34,8 @@
         </div>
     </div>
 </nav>
+
+
 
 <main>
     @yield('content')
@@ -84,12 +68,12 @@
 </footer>
 
 <!--Import jQuery before materialize.js-->
-<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 <script type="text/javascript">
     $( document ).ready(function(){
-        $(".button-collapse").sideNav();
+        $(".button-collapse").sidenav();
     });
 </script>
 

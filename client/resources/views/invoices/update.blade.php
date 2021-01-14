@@ -136,7 +136,7 @@
 @section('scripts')
     <script type="text/javascript">
         $( document ).ready(function() {
-            $('.datepicker').pickadate({
+            $('.datepicker').datepicker({
                 selectMonths: true, // Creates a dropdown to control month
                 selectYears: 5, // Creates a dropdown of 15 years to control year
                 formatSubmit: 'yyyy-mm-dd',
