@@ -22,7 +22,7 @@
 
 <nav>
     <div class="nav-wrapper">
-        <a href="{{route('home')}}" class="brand-logo">Invoicer</a>
+        <a href="{{route('home')}}" class="brand-logo" style="margin-left: 1rem;">Invoicer</a>
         <div style="width: 30vw; height: 100%; position: relative; display: inline-block; margin-left: 20vw;">
             <form action="{{route('invoices-list')}}" method="get">
                 <div class="input-field">
