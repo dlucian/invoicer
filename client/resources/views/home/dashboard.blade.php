@@ -16,8 +16,9 @@
 
 
 @section('scripts')
-    <script type="text/javascript" src="//www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
         google.load('visualization', '1.1', {packages: ['line']});
         google.setOnLoadCallback(drawChart);
 
@@ -41,7 +42,6 @@
                 lineWidth: 5,
                 curveType: 'function',
                 colors: ['#ff5c5e'],
-//                legend: 'none',
                 legend: { position: 'bottom' },
                 pointSize: 10,
                 animation: {duration:1000, easing: 'out'}
