@@ -37,11 +37,11 @@ All request follow the standards of RESTful API.
 
 ### Responses
 
-Responses follow the [jSend specifications](http://labs.omniti.com/labs/jsend) by Omniti Labs. All JSON responses include a `status` field that can be `success`, `fail` or `error`. The difference between `fail` and `error` is that while `fail` indicates an error in the request (such as invalid information provided), `error` will indicate unhandled exception and other server errors that aren't tightly related to the request. 
+Responses follow the [jSend specifications](http://labs.omniti.com/labs/jsend) by Omniti Labs. All JSON responses include a `status` field that can be `success`, `fail` or `error`. The difference between `fail` and `error` is that while `fail` indicates an error in the request (such as invalid information provided), `error` will indicate unhandled exception and other server errors that aren't tightly related to the request.
 
 ### Settings
 
-The settings are stored in the `settings` table. Update these to your own needs and requirements. 
+The settings are stored in the `settings` table. Update these to your own needs and requirements.
 
 * **`next_invoice`** *(numeric)* The next invoice number that will be created via the Create invoice request.
 * **`invoice_prepend`** *(string)* String to be prepended to each invoice number.
@@ -60,7 +60,7 @@ The settings are stored in the `settings` table. Update these to your own needs 
 
 ### Currency exchange rates
 
-By default, the Invoicer API retrieves currency rates for Romanian Leu (RON). To adapt it to your country, update the `retrieveRemote()` method in the `\Services\CurrencyConverter` class. The code is design to locally persist every exchange rate it uses to save up API requests and bandwidth. 
+By default, the Invoicer API retrieves currency rates for Romanian Leu (RON). To adapt it to your country, update the `retrieveRemote()` method in the `\Services\CurrencyConverter` class. The code is design to locally persist every exchange rate it uses to save up API requests and bandwidth.
 
 To get the rate for your foreign currency, launch the `my:currency` artisan command:
 
@@ -88,7 +88,7 @@ Parameters:
 **Example:**
 
     curl -X GET -H "Cache-Control: no-cache" 'http://api.invoicer.co/v1/invoice?created_after=2015-09-01&created_before=2015-09-15&key=YOUR_API_KEY'
-    
+
 Response:
 
 ```json
@@ -260,7 +260,7 @@ curl --request GET --url "http://api.invoicer.co/v1/invoice/F016?key=YOUR_API_KE
 }
 ```
 
-As you can see, the response contains the `price_domestic` attribute in the `products` JSON array and you'll also notice the `exchange_rate` attribute that's now being populated. 
+As you can see, the response contains the `price_domestic` attribute in the `products` JSON array and you'll also notice the `exchange_rate` attribute that's now being populated.
 
 #### Updating invoice information - PUT `/invoice/{id}`
 
@@ -268,15 +268,15 @@ The `PUT` request is used when you want to update *ALL* of the invoice's attribu
 
 #### Updating invoice information - PATCH `/invoice/{id}`
 
-`PATCH` is used to update one or several attributes. 
+`PATCH` is used to update one or several attributes.
 
 #### Deleting invoice - DELETE `/invoice/{id}`
 
-`DELETE` permanently deletes an invoice from the database. It however doesn't decrease the auto-incremental invoice number. 
+`DELETE` permanently deletes an invoice from the database. It however doesn't decrease the auto-incremental invoice number.
 
 ### Settings `/setting` Resource
 
-The settings are described earlier and are used for various configuration of the invoicing tool. 
+The settings are described earlier and are used for various configuration of the invoicing tool.
 
 #### Getting all settings - GET `/setting`
 
@@ -348,7 +348,7 @@ curl --request PUT \
 
 #### Deleting a setting - DELETE `/setting/{name}`
 
-A setting is deleted via `DELETE` requests. 
+A setting is deleted via `DELETE` requests.
 
 ```shell
 curl --request DELETE \
@@ -424,9 +424,17 @@ These 2 steps should be done only once, MySQL data is being persisted in ./docke
 
 In browser open **http://localhost:8200** and use the credentials for the default user: **user@email.com / password**
 
+### Submodules
+
+If you're using an older git version you'll need to clone the submodules (TCPDF for example):
+
+```shell
+$ git submodule update --init --recursive
+```
+
 ### Tests
 
-Invoicer contains a small suite of tests to check the integrity of the operations. Tests are stored in the `tests` folder. Feel free to add more tests as you see fit. 
+Invoicer contains a small suite of tests to check the integrity of the operations. Tests are stored in the `tests` folder. Feel free to add more tests as you see fit.
 
 ```shell
 vagrant@homestead:~/invoicer/api$ phpunit
