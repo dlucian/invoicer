@@ -80,7 +80,7 @@ class Invoice extends Model
             });
 
         return $allBetween
-            ->orderBy('issued_on','DESC')
+            ->orderBy('id','DESC')
             ->get();
     }
 
