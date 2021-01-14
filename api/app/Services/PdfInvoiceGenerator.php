@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Services\TCPDF\TCPDF;
+require_once(dirname(__FILE__) . '/TCPDF/tcpdf.php');
+
 use App\Models\Setting;
 
 class PdfInvoiceGenerator {
@@ -286,7 +287,7 @@ class PdfInvoiceGenerator {
 
 
 // Extend the TCPDF class to create custom Header and Footer
-class MYPDF extends TCPDF {
+class MYPDF extends \TCPDF {
 
     public $marginLeft = 0;
 
