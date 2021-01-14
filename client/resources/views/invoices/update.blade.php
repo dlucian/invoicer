@@ -31,7 +31,7 @@
                                 <label for="invoice">Invoice no.</label>
                             </div>
                             <div class="input-field col s12 m6">
-                                <input id="issued_on" name="issued_on" type="date" class="validate datepicker" value="{{Input::old('issued_on', !empty($invoice)?$invoice['issued_on']:date('Y-m-d'))}}"
+                                <input id="issued_on" name="issued_on" type="text" class="validate datepicker" value="{{Input::old('issued_on', !empty($invoice)?$invoice['issued_on']:date('Y-m-d'))}}"
                                        data-value="{{Input::old('issued_on', !empty($invoice)?$invoice['issued_on']:date('Y-m-d'))}}">
                                 <label for="issued_on">Issue Date</label>
                             </div>
@@ -137,8 +137,6 @@
     <script type="text/javascript">
         $( document ).ready(function() {
             $('.datepicker').datepicker({
-                selectMonths: true, // Creates a dropdown to control month
-                selectYears: 5, // Creates a dropdown of 15 years to control year
                 formatSubmit: 'yyyy-mm-dd',
                 format: 'yyyy-mm-dd'
             });
