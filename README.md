@@ -2,6 +2,8 @@
 
 Invoicing API + Bootstrap Client
 
+> :warning: **This repository is no longer maintained.** Please look for alternatives.
+
 ## Description
 
 Invoicing tool designed to create invoices for customers world-wide, using a foreign, widely-used currency such as USD, all while taking into account the bureaucracy in the country of residence (domestic), with its local currency.
